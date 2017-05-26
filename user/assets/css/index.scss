@@ -1,0 +1,15 @@
+﻿@import "../../../assets/css/base.scss";
+$viewW:640px;
+.zmiti-user-main-ui{
+  width:$viewW;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  @include pos(a);
+  z-index:10;
+  @include transform(translate3d($viewW,0,0));
+  @include transition(.4s);
+  &.active{
+  	@include transform(translate3d(0,0,0));
+  }
+}

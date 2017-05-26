@@ -1,0 +1,88 @@
+@import "../../../assets/css/base.scss";
+$viewW:640px;
+.zmiti-coursedetail-main-ui{
+
+	@include pos(a);
+	width:$viewW;
+	height:100%;
+	background:#fff;
+	left:0;
+	top:0;
+	z-index: 0;
+
+	@include transform(translate3d($viewW,0,0));
+ 	@include transition(.4s);
+ 	&.active{
+ 		@include transform(translate3d(0,0,0));
+ 		z-index: 20;
+ 	}
+ 	.zmiti-coursedetail-title{
+ 		@include pos(a);
+ 		max-width: 300px;
+ 		top:30px;
+ 		left:30px;
+ 		font-size: 32px;
+ 		
+ 	}
+
+	.zmiti-courcedetail-scroll{
+		margin-top: 120px;
+		overflow:hidden;
+		@include pos(r);
+		box-sizing:border-box;
+		li{
+			&>div{
+				&:first-of-type{
+					width:4px;
+					height:50px;
+					background:#91aa9d;
+					@include br(2px);
+					margin-left: 124px;
+				}
+				&:last-of-type{
+					@include displayBox(horizontal);
+					&>aside{
+						.zmiti-courcedetail-date{
+							color:#ccc;
+						}
+						.zmiti-courcedetail-nickname{
+							display: inline-block;
+							@include pos(r);
+							top: 6px;
+							max-width: 220px;
+
+							&.zmiti-first-user{
+								max-width: 160px;								
+							}
+
+						}
+						.zmiti-headimgurl{
+							box-shadow: 0 3px 10px rgba(0,0,0,.3);
+						}
+						.zmiti-first-author{
+							margin-left: 20px;
+							border:1px solid #ccc;
+							padding:10px;
+							color:#663300;
+							@include br(10px);
+						}
+						-webkit-box-flex:1;
+						&:first-of-type{
+							margin-left: 20px;
+						}
+						&:last-of-type{
+							text-align: right;
+							margin-right: 20px;
+							color:#cc6633;	
+						}
+					}
+				}
+			}
+			img{
+				width:50px;
+				margin:0 20px;
+				@include br(50%);
+			}
+		}
+	}
+}

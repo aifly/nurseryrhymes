@@ -1,0 +1,50 @@
+@import "../../../assets/css/base.scss";
+$viewW:640px;
+ .zmiti-courselist-main-ui{
+ 	width:$viewW;
+ 	height:100%;
+ 	@include pos(a);
+ 	background: #fff;
+ 	z-index: 1;
+ 	left:0;
+ 	top:0;
+ 	@include transform(translate3d($viewW,0,0));
+ 	@include transition(.4s);
+ 	&.active{
+ 		@include transform(translate3d(0,0,0));
+ 		z-index: 20;
+ 	}
+ 	&.hide{
+ 		@include transform(translate3d(-$viewW,0,0));
+ 		z-index: 20;
+ 	}
+ 	.zmiti-courselist-scroll{
+ 		@include pos(r);
+ 		bottom:0;
+ 		width:100%;
+ 		margin:120px auto 0;
+ 		overflow: hidden;
+ 		box-sizing:border-box;
+ 		li{
+ 			width:96%;
+ 			margin:0 auto;
+ 			@include displayBox(horizontal);
+ 			$size:90px;
+ 			height:$size;
+ 			line-height: $size;
+ 			border-bottom:1px solid #ccc;
+ 			aside{
+ 				-webkit-box-flex:1;
+ 				&:first-of-type{
+ 					margin-left: 20px;
+ 					max-width: 300px;
+ 				}
+ 				&:last-of-type{
+ 					margin-right: 20px;
+ 					text-align: right;
+ 				}
+ 			}
+ 		}
+
+ 	}
+ }

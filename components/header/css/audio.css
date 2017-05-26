@@ -1,0 +1,74 @@
+/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {
+    background-color: #fff;
+    border-color: #bf1616;
+    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);
+}*/
+.lt-full {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+.zmiti-text-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis; }
+
+.zmiti-break-all {
+  word-wrap: break-word;
+  word-break: break-all; }
+
+.zmiti-audio-main-ui {
+  width: 500px;
+  height: 62px;
+  line-height: 62px;
+  border: 1px solid #91aa9d;
+  border-radius: 30px;
+  margin: 38px auto 0; }
+  .zmiti-audio-main-ui.zmiti-audio-custom {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 auto; }
+    .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C {
+      width: 220px;
+      margin: 0 auto;
+      height: 100%;
+      display: -webkit-box;
+      -webkit-box-align: center;
+      -webkit-box-pack: center;
+      -webkit-box-orient: horizontal; }
+      .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside {
+        -webkit-box-flex: 1;
+        color: #ccc;
+        font-size: 20px; }
+        .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside img {
+          width: 40px;
+          vertical-align: middle;
+          margin-right: 10px;
+          margin-left: 20px; }
+        .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside:last-of-type {
+          text-align: right;
+          margin-right: 10px; }
+  .zmiti-audio-main-ui .zmiti-audio-C {
+    width: 440px;
+    margin: 0 auto;
+    height: 100%;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-orient: horizontal; }
+    .zmiti-audio-main-ui .zmiti-audio-C > aside {
+      -webkit-box-flex: 1;
+      color: #ccc; }
+      .zmiti-audio-main-ui .zmiti-audio-C > aside img {
+        width: 70px;
+        vertical-align: middle;
+        margin-right: 10px; }
+      .zmiti-audio-main-ui .zmiti-audio-C > aside:last-of-type {
+        text-align: right; }
+
+/*# sourceMappingURL=audio.css.map */

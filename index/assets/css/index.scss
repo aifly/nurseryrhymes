@@ -1,0 +1,181 @@
+﻿@import "../../../assets/css/base.scss";
+
+$viewW:640px;
+.zmiti-index-main-ui{
+   width: $viewW;
+   @include transition(.3s);
+
+   &.hide{
+   	 @include transform( scale(.8) translate3d(-$viewW,0,0));
+   }
+   &.active{
+		.zmiti-index-bg, .zmiti-index-text{
+			@include transform(scale(1));
+			@include transitionTimingFunction(cubic-bezier(0.53, 1.64, 0.74, 0.76));
+		}
+		.zmiti-index-logo{
+			@include transitionTimingFunction(cubic-bezier(0.53, 1.64, 0.74, 0.76));
+			@include transform(translate3d(0,0,0));			
+		}
+		.zmiti-entry-btn{
+			opacity:1;
+		}
+		.zmiti-begin-read{
+			opacity:1;
+			@include transition(1s 2.8s);
+		}
+		.zmiti-index-read{
+			opacity:1;
+			@include transition(1s 2.8s);
+		}
+
+   }
+
+   .zmiti-index-bg{
+   	 @include pos(a);
+   	 width: $viewW;
+   	 height: 1200px;
+   	 img{height: 100%;width: $viewW}
+   	 left: 50%;
+   	 margin-left: -320px;
+   	 top: 50%;
+   	 margin-top: -600px;
+   	 @include transform(scale(0));
+
+   	 @include transition(.4s .5s);
+
+   	 &.active{
+		@include transform(scale(1));   	 	
+   	 }
+   }
+
+
+   .zmiti-index-btn-group{
+   	 @include displayBox(horizontal);
+   	 @include pos(a);
+   	 width: 100%;
+   	 bottom: .2rem;
+   	 aside{
+   	 	text-align: center;
+   	 	-webkit-box-flex:1;
+   	 	img{width: 80%;}
+   	 	@include transition(.1s);
+   	 	&.active{
+
+   	 		@include transform(scale(.95));
+   	 	}
+   	 }
+
+   }
+   .zmiti-index-logo{
+   	 @include pos(a);
+   	 left: 1.5rem;
+   	 width: 7rem;
+   	 @include transition(.6s 1s);
+   	 @include transform(translate3d(0,-10rem,0));
+   }
+
+   .zmiti-index-text{
+   	@include pos(a);
+   	width: 8rem;
+   	left: 1rem;
+   	top: 1.4rem;
+   	@include transform(scale(0));
+   	@include transition(.5s 1.9s);
+   }
+   .zmiti-index-read{
+   	 @include pos(a);
+   	 width: 7rem;
+   	 left: 1.5rem;
+   	 top: 41vh;
+   	 opacity:0;
+
+   }
+   .zmiti-begin-read{
+   	  width: 4rem;
+   	  text-align: center;
+   	  line-height: 1rem;
+   	  @include pos(a);
+   	  bottom: 1.4rem;
+   	  left: 55%;
+   	  @include transform3d;
+   	  margin-left: -2rem;
+   	  opacity:0;
+   	  @include transition(.4s);
+   	  .zmiti-index-person{
+   	  	@include pos(r);
+   	  	@include transform( translate3d(0,0,-61px));
+   	  }
+   	  .zmiti-entry-btn{
+   	  	@include pos(a);
+   	  	left: 0;
+   	  	bottom: 0;
+   	  	@include transition(.1s 2.8);
+   	  	&.active{
+   	  		@include transformOrigin(left);
+   	  		@include transform(rotateY(10deg) translate3d(0,0,1px));
+   	  	}
+   	  	z-index: 10;
+   	  }
+   }
+
+   .zmiti-index-cover{
+   	 @include transition(.4s);
+   	   &.hide{
+   	   	@include transformOrigin(center center);
+	   	 @include transform(  translate3d(-$viewW,0,0) scale(.8));
+	   }
+   }
+
+
+
+   .zmiti-index-introduce{
+   	 z-index: 1;
+   	 @include transform(translate3d($viewW,0,0));
+   	 @include transition(.3s);
+   	 &.active{
+   	 	@include transform(translate3d(0,0,0));
+   	 }
+
+   	 .zmiti-index-introduce-main{
+   	 	width: $viewW;
+   	 	@include pos(r);
+   	 	box-sizing:border-box;
+   	 	.zmiti-index-introduce-blue,.zmiti-index-introduce-white{
+   	 		width: $viewW - 100;
+   	 		left: 50px;
+   	 		@include br(20px);
+   	 		top: 60px;
+   	 		background: #5d93d8;
+   	 		height: 600px;
+   	 		@include pos(a);
+   	 	}
+   	 	.zmiti-index-introduce-white{
+   	 		$size : 180px;
+   	 		width: $viewW - $size;
+   	 		left: $size / 2;
+   	 		height: 520px;
+   	 		top: 100px;
+   	 		background: #fff;
+
+   	 		overflow: hidden;
+
+
+   	 		.zmiti-index-introduce-scorll{
+   	 			header{
+   	 				width: 200px;
+   	 				margin: 20px auto;
+   	 			}
+   	 			overflow: hidden;
+   	 			@include pos(r);
+   	 			&>section{
+   	 				width: 90%;
+   	 				margin: 20px auto;
+   	 				text-indent: 2em;
+   	 				line-height: 40px;
+   	 			}
+   	 		}
+   	 	}
+   	 }
+   }
+}

@@ -1,0 +1,55 @@
+/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {
+    background-color: #fff;
+    border-color: #bf1616;
+    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);
+}*/
+.lt-full {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+.zmiti-text-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-text-overflow: ellipsis; }
+
+.zmiti-break-all {
+  word-wrap: break-word;
+  word-break: break-all; }
+
+.zmiti-user-header {
+  width: 100%;
+  height: 400px;
+  position: absolute;
+  left: 0;
+  top: 0; }
+
+.zmiti-user-back {
+  width: 120px;
+  height: 60px;
+  border: 1px solid #ccc;
+  line-height: 60px;
+  text-align: center;
+  border-radius: 60px;
+  position: absolute;
+  font-size: 30px;
+  right: 24px;
+  top: 24px; }
+  .zmiti-user-back.active {
+    -webkit-transform: scale(0.95);
+    transform: scale(0.95); }
+    .zmiti-user-back.active:before {
+      content: '';
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 60px;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); }
+
+/*# sourceMappingURL=header.css.map */
