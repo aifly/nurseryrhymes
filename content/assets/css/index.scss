@@ -13,6 +13,13 @@ $viewW:640px;
       width: 100%;
       box-sizing:border-box;
       @include pos(r);
+      .zmiti-index-voice{
+        @include  pos(a);
+        width:184px;
+        top:534px;
+        left: 50%;
+        margin-left: -97px;
+       }
 
       .zmiti-content-ty{
          @include displayBox(horizontal);

@@ -123,6 +123,7 @@ export class App extends Component {
 
 	getPos(nickname,headimgurl){
 	    	var s = this;
+	    	alert('getpos');
 	    	 $.ajax({
 	        	url:`http://restapi.amap.com/v3/geocode/regeo?key=10df4af5d9266f83b404c007534f0001&location=${wx.posData.longitude},${wx.posData.latitude}&poitype=&radius=100&extensions=base&batch=false&roadlevel=1`+'',
 				type:'get',
@@ -140,7 +141,7 @@ export class App extends Component {
 					   		nickname:nickname,
 					   		headimgurl:headimgurl
 					   	}
-
+					   	alert(nickname);
 					   	s.setState({
 					   		nickname,
 					   		headimgurl,
@@ -261,13 +262,35 @@ export class App extends Component {
 							    signature: data.signature,// 必填，签名，见附录1
 							    jsApiList: [ 'checkJsApi',
 											  'onMenuShareTimeline',
-											  'onMenuShareAppMessage',
-											  'onMenuShareQQ',
-											  'onMenuShareWeibo',
-											  'hideMenuItems',
-											  'showMenuItems',
-											  'hideAllNonBaseMenuItem',
-											  'showAllNonBaseMenuItem'
+											'onMenuShareAppMessage',
+											'onMenuShareQQ',
+											'onMenuShareWeibo',
+											'hideMenuItems',
+											'showMenuItems',
+											'hideAllNonBaseMenuItem',
+											'showAllNonBaseMenuItem',
+											'translateVoice',
+											'startRecord',
+											'stopRecord',
+											'onRecordEnd',
+											'playVoice',
+											'pauseVoice',
+											'stopVoice',
+											'uploadVoice',
+											'downloadVoice',
+											'chooseImage',
+											'previewImage',
+											'uploadImage',
+											'downloadImage',
+											'getNetworkType',
+											'openLocation',
+											'getLocation',
+											'hideOptionMenu',
+											'showOptionMenu',
+											'closeWindow',
+											'scanQRCode',
+											'chooseWXPay',
+											'openProductSpecificView',
 									] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 							});
 
@@ -276,13 +299,14 @@ export class App extends Component {
 			    		wx.getLocation({
 						    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
 						    fail(){
+						    	alert('location fail');
 						    },
 						    success: function (res) {
 						        var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
 						        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 						        var speed = res.speed; // 速度，以米/每秒计
 						        var accuracy = res.accuracy; // 位置精度
-
+						        alert('location ok');
 						        wx.posData = {
 						        	longitude,
 						        	latitude,
@@ -363,7 +387,7 @@ export class App extends Component {
 						s.state.id = '';
 						s.state.parentWxopenId = '';
 						s.state.showShareOpen = false;
-						s.wxConfig('童谣'.replace(/{username}/ig,s.state.nickname),'不'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid);
+						
 						setTimeout(()=>{
 					    	s.state.showPoetryLoading = false;
 							s.forceUpdate();
@@ -374,10 +398,25 @@ export class App extends Component {
 
 			})
 		})
+
+
+		obserable.on('getLocalId', (data)=> {
+			this.setState({
+				audioSrc: data
+			})
+		});
+
+		obserable.on('getTransformResult', (data)=> {
+			this.setState({
+				transformResult: data
+			});
+		});
 		
 		obserable.trigger({
 			type:'loadTY'
-		})
+		});
+
+
 		
 
 		s.loading(this.loadingImg,(scale)=>{
@@ -394,10 +433,14 @@ export class App extends Component {
 
 			this.state.worksid = data.worksid;
 			this.state.wxappid = data.wxappid;
+			this.worksid = data.worksid;
+			var s = this;
 			this.state.wxappsecret = data.wxappsecret;
 			this.forceUpdate();
-			
-			/*$.ajax({
+			//alert("data.wxappid : "+data.wxappid+ ' , data.wxappsecret :' + data.wxappsecret);
+
+
+			$.ajax({
 				url:'http://api.zmiti.com/v2/weixin/getwxuserinfo/',
 				data:{
 					code:s.getQueryString('code'),
@@ -405,14 +448,15 @@ export class App extends Component {
 					wxappsecret:data.wxappsecret
 				},
 				error(e){
+					alert('error');
 				},
 				success(dt){
-					 
+
 					if(dt.getret === 0){
 						s.setState({
 							showLoading:true
 						});
-						s.loading(data.loadingImg,(scale)=>{
+						s.loading(s.loadingImg,(scale)=>{
 							s.setState({
 								progress:(scale*100|0)+'%'
 							})
@@ -426,13 +470,17 @@ export class App extends Component {
 							localStorage.setItem('nickname',dt.userinfo.nickname );
 							localStorage.setItem('headimgurl',dt.userinfo.headimgurl);
 							s.openid = dt.userinfo.openid;
+
 							s.nickname = dt.userinfo.nickname;
 							s.headimgurl = dt.userinfo.headimgurl;
-						
+							
+							s.wxConfig('童谣'.replace(/{username}/ig,s.state.nickname),'不'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid);
+							alert(s.wxConfig);
 
 							if (wx.posData && wx.posData.longitude) {
 								s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
 							}
+
 
 						
 							s.state.myHeadImg = dt.userinfo.headimgurl
@@ -447,6 +495,8 @@ export class App extends Component {
 						s.setState({
 							showLoading:true
 						});
+
+
 
 						if(s.isWeiXin() ){
 
@@ -524,7 +574,7 @@ export class App extends Component {
 
 			s.headimgurl = localStorage.getItem('headimgurl');
 		
-			s.forceUpdate();*/
+			s.forceUpdate();
 			
 
 			
