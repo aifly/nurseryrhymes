@@ -59,7 +59,7 @@ class ZmitiIndexApp extends Component {
 					</div>
 				</section>
 				<section className={'zmiti-index-introduce lt-full '+ intrStyle }style={bgStyle}>
-					<ZmitiHeaderApp></ZmitiHeaderApp>
+					<ZmitiHeaderApp {...this.props}></ZmitiHeaderApp>
 					<section className='zmiti-index-introduce-main' style={{height:this.viewH - 100}}>
 						<div className='zmiti-index-introduce-blue'>
 							

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {PubCom} from '../components/public/pub.jsx';
 import './assets/css/index.css';
 import $ from 'jquery';
+import ZmitiHeaderApp from '../components/header/zmiti-header.jsx';
 
 class ZmitiResultApp extends Component {
 	constructor(props) {
@@ -16,50 +17,26 @@ class ZmitiResultApp extends Component {
 	render() {
 
 		var component = '';
-		switch(this.props.theme){
-			case "PAPER":
-			break;
-			case "DANGJIAN":
-			var mainStyle = {
-					background:"#fff url(./assets/images/bg.png) no-repeat center top / cover "
+		
+		var mainStyle = {
+					background:"#fff url(./assets/images/bg1.jpg) no-repeat center top / cover "
 				}
-				var arr = ["A",'B','C',"D"];
-			component = <div ref='zmiti-dangjian-reuslt-C' className='zmiti-dangjian-result lt-full' style={mainStyle}>
-				<section className='zmiti-dangjian-reuslt-C' style={{paddingBottom:50}}>
-					<header className='zmiti-dangjian-header'>
-						标准答案
-					</header>
-					<div className='zmiti-dangjian-q-list-C'>
-						{this.props.myAnswer.length>=this.props.question.length && <div className='zmiti-dangjian-reuslt-q-list'>
-						{this.props.question.map((item,i)=>{
-							return <div key={i} className='zmiti-dangjian-answer-C'>
-								<article>
-									{item.img && <img src={item.img}/>}	
-									<div>{(i+1)+ '、' +item.title}</div>
-								</article>
-								{item.answer.map((a,k)=>{
-									if(a.isRight){
-										if(k === this.props.myAnswer[i]){
-											return <div key={i+new Date().getTime()+2} className={'zmiti-dangjian-result-a-item right '+(a.isRight?'active':'') }><span>{arr[k]+'、'+a.content}</span></div>		
-										}else{
-											return <div key={i+new Date().getTime()+100} className={'zmiti-dangjian-result-a-item error ' }><span>{arr[k]+'、'+a.content}</span></div>		
-										}
-									}									
-									return <div key={k} className={'zmiti-dangjian-result-a-item '+(this.props.myAnswer[i] === k ?'active':'') }><span>{arr[k]+'、'+a.content}</span></div>
-								})}
-							</div>
-						})}
-						<div onTouchTap={this.backToShare.bind(this)} className={'zmiti-dangjian-back-btn '+(this.state.back?'active':'')}>返回</div>
-					</div>}
-					</div>
-				</section>
-			</div>
-			break;
-		}
-
 		return (
-			<div className={'zmiti-result-main-ui lt-full  '+(this.state.showResult?'show':'')}>
-				{component}
+			<div className={'zmiti-result-main-ui lt-full  '+(this.state.showResult?'show':'')} style={mainStyle}>
+				<ZmitiHeaderApp {...this.props}></ZmitiHeaderApp>
+				<section className='zmiti-result-main' style={{height:this.viewH - 100}}>
+					<div className='zmiti-result-ty'>
+						<div>
+							<img src='./assets/images/age.png'/>
+							<div className='zmiti-result-text'>
+								<span>{this.props.nickname}</span> ，通过我的分析
+							</div>
+							<div className='zmiti-result-age'>{this.props.age}</div>
+						</div>
+					</div>
+					<div className='zmiti-result-begin-read-btn'>让朋友猜我的年龄</div>
+					<div className='zmiti-result-reset'>重复读一遍</div>
+				</section>
 			</div>
 		);
 	}

@@ -26,7 +26,8 @@ export class App extends Component {
 			wxappid:'',
 			showLoading:true,
 			worksid:'',	
-			nickname:'',
+			age:18,
+			nickname:'文明网',
 			headimgurl:'',
 			duration:0,//录音时长。
 			transformResult:'',
@@ -69,6 +70,7 @@ export class App extends Component {
 				{this.state.showLoading && <ZmitiLoadingApp progress={this.state.progress}></ZmitiLoadingApp>}
 				{!this.state.showLoading && <ZmitiIndexApp {...data}></ZmitiIndexApp>}
 				{!this.state.showLoading && <ZmitiContentApp {...this.state} {...data}></ZmitiContentApp>}
+				{!this.state.showLoading && <ZmitiResultApp {...this.state} {...data}></ZmitiResultApp>}
 
 				{this.state.showPoetryLoading&&<div className='zmiti-get-poetry-loading'>
 										<div>
@@ -123,7 +125,6 @@ export class App extends Component {
 
 	getPos(nickname,headimgurl){
 	    	var s = this;
-	    	alert('getpos');
 	    	 $.ajax({
 	        	url:`http://restapi.amap.com/v3/geocode/regeo?key=10df4af5d9266f83b404c007534f0001&location=${wx.posData.longitude},${wx.posData.latitude}&poitype=&radius=100&extensions=base&batch=false&roadlevel=1`+'',
 				type:'get',
@@ -141,6 +142,7 @@ export class App extends Component {
 					   		nickname:nickname,
 					   		headimgurl:headimgurl
 					   	}
+
 					   	alert(nickname);
 					   	s.setState({
 					   		nickname,
@@ -306,7 +308,7 @@ export class App extends Component {
 						        var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
 						        var speed = res.speed; // 速度，以米/每秒计
 						        var accuracy = res.accuracy; // 位置精度
-						        alert('location ok');
+						   
 						        wx.posData = {
 						        	longitude,
 						        	latitude,
@@ -419,7 +421,7 @@ export class App extends Component {
 
 		
 
-		s.loading(this.loadingImg,(scale)=>{
+		s.loading(s.loadingImg,(scale)=>{
 			s.setState({
 				progress:(scale*100|0)+'%'
 			})
@@ -437,7 +439,6 @@ export class App extends Component {
 			var s = this;
 			this.state.wxappsecret = data.wxappsecret;
 			this.forceUpdate();
-			//alert("data.wxappid : "+data.wxappid+ ' , data.wxappsecret :' + data.wxappsecret);
 
 
 			$.ajax({
@@ -473,11 +474,11 @@ export class App extends Component {
 
 							s.nickname = dt.userinfo.nickname;
 							s.headimgurl = dt.userinfo.headimgurl;
+							s.wxConfig('童谣'.replace(/{username}/ig,s.state.nickname),'不'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid,s.worksid);
 							
-							s.wxConfig('童谣'.replace(/{username}/ig,s.state.nickname),'不'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid);
-							alert(s.wxConfig);
 
 							if (wx.posData && wx.posData.longitude) {
+
 								s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
 							}
 
@@ -500,26 +501,41 @@ export class App extends Component {
 
 						if(s.isWeiXin() ){
 
-							if(localStorage.getItem('oauthurl'+s.worksid)){
+							/*if(localStorage.getItem('oauthurl'+s.worksid)){
 								window.location.href = localStorage.getItem('oauthurl'+s.worksid);
 								return;
-							}
+							}*/
 
+							var redirect_uri = window.location.href.split('?')[0];
+							var symbol = redirect_uri.indexOf('?') > -1 ? '&' : '?';
+							if (s.state.id && s.state.parentWxopenId) {
+								redirect_uri = redirect_uri + symbol + 'id=' + s.state.id + '&wxopenid=' + s.state.parentWxopenId;
+							}
+							
+							symbol = redirect_uri.indexOf('?') > -1 ? '&' : '?';
+							if (!s.getQueryString('zmiti')) {
+								//redirect_uri += symbol + 'zmiti=start';
+							}
+							
 							$.ajax({
 								url:'http://api.zmiti.com/v2/weixin/getoauthurl/',
 								type:'post',
 								data:{
-									redirect_uri:window.location.href.replace(/code/ig,'zmiti'),
+									redirect_uri:redirect_uri,
 									scope:'snsapi_userinfo',
 									worksid:s.worksid,
 									state:new Date().getTime()+''
 								},
 								error(){
+									
 								},
 								success(dt){
+
 									if(dt.getret === 0){
 										localStorage.setItem('oauthurl'+s.worksid,dt.url);
 										window.location.href =  dt.url;
+									}else{
+										alert('getoauthurl back error')
 									}
 								}
 							})
@@ -597,7 +613,12 @@ export class App extends Component {
 	}
 
 	loading(arr, fn, fnEnd){
+		var arr = arr || [];
         var len = arr.length;
+        if(len<=0){
+        	fnEnd();
+        	return;
+        }
         var count = 0;
         var i = 0;
         

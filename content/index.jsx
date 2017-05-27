@@ -37,7 +37,7 @@ class ZmitiContentApp extends Component {
 		}
 		return (
 			<div className={'zmiti-content-main-ui lt-full'} style={bgStyle}>
-				<ZmitiHeaderApp></ZmitiHeaderApp>
+				<ZmitiHeaderApp {...this.props}></ZmitiHeaderApp>
 				<section className='zmiti-content-main' style={{height:this.viewH - 100}}>
 
 					<img className='zmiti-content-person' src='./assets/images/introl.png'/>
