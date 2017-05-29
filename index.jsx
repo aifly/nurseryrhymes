@@ -10,7 +10,7 @@ import ZmitiLoadingApp from './loading/index.jsx';
 import ZmitiIndexApp from './index/index.jsx';
 import ZmitiContentApp from './content/index.jsx';
 import ZmitiResultApp from './result/index.jsx';
-
+import ZmitiToastApp from './components/toast/index.jsx';
 import Obserable from './components/public/obserable';
 var obserable = new Obserable();
 
@@ -20,6 +20,7 @@ export class App extends Component {
 
 
 		this.state = {
+			toast:'',
 			progress:'0%',
 			score:0,//积分
 			openid:'',
@@ -34,6 +35,7 @@ export class App extends Component {
 			latitude:'',
 			longitude:'',
 			usercity:'',
+			shareImg:'',
 			poetryTitle:'',
 			id:'',//6NPqiCFidf
 			parentWxopenId:'',//oSDVUs5MkTw7MxaXPu0KsflRfSqM
@@ -68,7 +70,7 @@ export class App extends Component {
 		return (
 			<div className='zmiti-main-ui' style={mainStyle}>
 				{this.state.showLoading && <ZmitiLoadingApp progress={this.state.progress}></ZmitiLoadingApp>}
-				{!this.state.showLoading && <ZmitiIndexApp {...data}></ZmitiIndexApp>}
+				{!this.state.showLoading && <ZmitiIndexApp {...data} {...this.state}></ZmitiIndexApp>}
 				{!this.state.showLoading && <ZmitiContentApp {...this.state} {...data}></ZmitiContentApp>}
 				{!this.state.showLoading && <ZmitiResultApp {...this.state} {...data}></ZmitiResultApp>}
 
@@ -90,6 +92,7 @@ export class App extends Component {
 											</div>
 										</div>
 									</div>}
+									<ZmitiToastApp toast={this.state.toast}></ZmitiToastApp>
 			</div>
 		);
 	}
@@ -143,10 +146,10 @@ export class App extends Component {
 					   		headimgurl:headimgurl
 					   	}
 
-					   	alert(nickname);
 					   	s.setState({
 					   		nickname,
 					   		headimgurl,
+					   		openid: s.openid,
 					   		showUI:true,
 					   		latitude:wx.posData.latitude,
 					   		longitude:wx.posData.longitude,
@@ -243,7 +246,6 @@ export class App extends Component {
 	wxConfig(title,desc,img,appId='wxfacf4a639d9e3bcc',worksid){
 		   var durl = location.href.split('#')[0]; //window.location;
 		        var code_durl = encodeURIComponent(durl);
-
 
 		        var s = this;
 
@@ -413,24 +415,27 @@ export class App extends Component {
 				transformResult: data
 			});
 		});
+
+		obserable.on('showToast',data=>{
+
+			this.setState({
+				toast:data
+			});
+			if(data){
+				setTimeout(()=>{
+					this.setState({
+						toast:''
+					})
+				},2000)	
+			}
+			
+		})
 		
 		obserable.trigger({
 			type:'loadTY'
 		});
 
 
-		
-
-		s.loading(s.loadingImg,(scale)=>{
-			s.setState({
-				progress:(scale*100|0)+'%'
-			})
-		},()=>{
-			s.setState({
-				showLoading:false
-			});
-			
-		});
 		$.getJSON('./assets/js/data.json',(data)=>{
 
 			this.state.worksid = data.worksid;

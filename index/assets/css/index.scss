@@ -5,9 +5,20 @@ $viewW:640px;
    width: $viewW;
    @include transition(.3s);
 
-   &.hide{
-   	 @include transform( scale(.8) translate3d(-$viewW,0,0));
+
+   &.hideleft{
+   	 @include transform( translate3d(-$viewW,0,0)  scale(.8));
    }
+
+   &.show{
+      @include transform( scale(1) translate3d(0,0,0));
+   }
+
+   &.hideright{
+      @include transform( translate3d($viewW,0,0)  scale(.8));
+   }
+
+ 
    &.active{
 		.zmiti-index-bg, .zmiti-index-text{
 			@include transform(scale(1));

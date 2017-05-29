@@ -100,6 +100,10 @@
 
 	var _resultIndexJsx2 = _interopRequireDefault(_resultIndexJsx);
 
+	var _componentsToastIndexJsx = __webpack_require__(211);
+
+	var _componentsToastIndexJsx2 = _interopRequireDefault(_componentsToastIndexJsx);
+
 	var _componentsPublicObserable = __webpack_require__(207);
 
 	var _componentsPublicObserable2 = _interopRequireDefault(_componentsPublicObserable);
@@ -117,6 +121,7 @@
 			_get(Object.getPrototypeOf(App.prototype), 'constructor', this).call(this, props);
 
 			this.state = {
+				toast: '',
 				progress: '0%',
 				score: 0, //积分
 				openid: '',
@@ -131,6 +136,7 @@
 				latitude: '',
 				longitude: '',
 				usercity: '',
+				shareImg: '',
 				poetryTitle: '',
 				id: '', //6NPqiCFidf
 				parentWxopenId: '', //oSDVUs5MkTw7MxaXPu0KsflRfSqM
@@ -165,7 +171,7 @@
 					'div',
 					{ className: 'zmiti-main-ui', style: mainStyle },
 					this.state.showLoading && _react2['default'].createElement(_loadingIndexJsx2['default'], { progress: this.state.progress }),
-					!this.state.showLoading && _react2['default'].createElement(_indexIndexJsx2['default'], data),
+					!this.state.showLoading && _react2['default'].createElement(_indexIndexJsx2['default'], _extends({}, data, this.state)),
 					!this.state.showLoading && _react2['default'].createElement(_contentIndexJsx2['default'], _extends({}, this.state, data)),
 					!this.state.showLoading && _react2['default'].createElement(_resultIndexJsx2['default'], _extends({}, this.state, data)),
 					this.state.showPoetryLoading && _react2['default'].createElement(
@@ -191,7 +197,8 @@
 								_react2['default'].createElement('div', { className: 'sk-circle12 sk-circle' })
 							)
 						)
-					)
+					),
+					_react2['default'].createElement(_componentsToastIndexJsx2['default'], { toast: this.state.toast })
 				);
 			}
 		}, {
@@ -245,10 +252,10 @@
 								headimgurl: headimgurl
 							};
 
-							alert(nickname);
 							s.setState({
 								nickname: nickname,
 								headimgurl: headimgurl,
+								openid: s.openid,
 								showUI: true,
 								latitude: wx.posData.latitude,
 								longitude: wx.posData.longitude,
@@ -475,19 +482,24 @@
 					});
 				});
 
+				obserable.on('showToast', function (data) {
+
+					_this3.setState({
+						toast: data
+					});
+					if (data) {
+						setTimeout(function () {
+							_this3.setState({
+								toast: ''
+							});
+						}, 2000);
+					}
+				});
+
 				obserable.trigger({
 					type: 'loadTY'
 				});
 
-				s.loading(s.loadingImg, function (scale) {
-					s.setState({
-						progress: (scale * 100 | 0) + '%'
-					});
-				}, function () {
-					s.setState({
-						showLoading: false
-					});
-				});
 				_jquery2['default'].getJSON('./assets/js/data.json', function (data) {
 
 					_this3.state.worksid = data.worksid;
@@ -35135,7 +35147,8 @@
 				beginTest: false,
 				imgW: 0,
 				transformY: 0,
-				isEntry: true
+				isEntry: false,
+				indexClass: 'show'
 			};
 			this.viewW = document.documentElement.clientWidth;
 			this.viewH = document.documentElement.clientHeight;
@@ -35163,7 +35176,7 @@
 				}
 				return _react2['default'].createElement(
 					'div',
-					{ className: 'zmiti-index-main-ui lt-full ' + (this.state.animate ? 'active' : ''), style: bgStyle },
+					{ className: 'zmiti-index-main-ui lt-full ' + (this.state.animate ? 'active ' : ' ') + this.state.indexClass, style: bgStyle },
 					_react2['default'].createElement(
 						'section',
 						{ className: 'zmiti-index-cover lt-full ' + (this.state.isEntry ? 'hide' : '') },
@@ -35250,12 +35263,20 @@
 			value: function readTY() {
 				var _this = this;
 
+				var obserable = this.props.obserable;
+
 				this.setState({
 					readTY: true
 				});
 				setTimeout(function () {
 					_this.setState({
-						readTY: false
+						readTY: false,
+						indexClass: 'hideleft'
+					});
+
+					obserable.trigger({
+						type: 'toggleContent',
+						data: 'active'
 					});
 				}, 200);
 			}
@@ -35305,10 +35326,18 @@
 					});
 				}, 200);
 
-				var IScroll = this.props.IScroll;
+				var _props = this.props;
+				var IScroll = _props.IScroll;
+				var obserable = _props.obserable;
 
 				this.scroll = new IScroll(this.refs['zmiti-index-introduce-scorll'], {
 					scrollbars: true
+				});
+
+				obserable.on('toggleIndex', function (data) {
+					_this4.setState({
+						indexClass: data
+					});
 				});
 			}
 		}]);
@@ -35354,7 +35383,7 @@
 
 
 	// module
-	exports.push([module.id, ".lt-full{width:100%;height:100%;position:absolute;left:0;top:0;overflow:hidden}.zmiti-index-main-ui{width:640px;-webkit-transition:.3s;transition:.3s}.zmiti-index-main-ui.hide{-webkit-transform:scale(0.8) translate3d(-640px, 0, 0);transform:scale(0.8) translate3d(-640px, 0, 0)}.zmiti-index-main-ui.active .zmiti-index-bg,.zmiti-index-main-ui.active .zmiti-index-text{-webkit-transform:scale(1);transform:scale(1);-webkit-transition-timing-function:cubic-bezier(0.53, 1.64, 0.74, 0.76);transition-timing-function:cubic-bezier(0.53, 1.64, 0.74, 0.76)}.zmiti-index-main-ui.active .zmiti-index-logo{-webkit-transition-timing-function:cubic-bezier(0.53, 1.64, 0.74, 0.76);transition-timing-function:cubic-bezier(0.53, 1.64, 0.74, 0.76);-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}.zmiti-index-main-ui.active .zmiti-entry-btn{opacity:1}.zmiti-index-main-ui.active .zmiti-begin-read{opacity:1;-webkit-transition:1s 2.8s;transition:1s 2.8s}.zmiti-index-main-ui.active .zmiti-index-read{opacity:1;-webkit-transition:1s 2.8s;transition:1s 2.8s}.zmiti-index-main-ui .zmiti-index-bg{position:absolute;width:640px;height:1200px;left:50%;margin-left:-320px;top:50%;margin-top:-600px;-webkit-transform:scale(0);transform:scale(0);-webkit-transition:0.4s 0.5s;transition:0.4s 0.5s}.zmiti-index-main-ui .zmiti-index-bg img{height:100%;width:640px}.zmiti-index-main-ui .zmiti-index-bg.active{-webkit-transform:scale(1);transform:scale(1)}.zmiti-index-main-ui .zmiti-index-btn-group{display:-webkit-box;-webkit-box-align:center;-webkit-box-pack:center;-webkit-box-orient:horizontal;position:absolute;width:100%;bottom:.2rem}.zmiti-index-main-ui .zmiti-index-btn-group aside{text-align:center;-webkit-box-flex:1;-webkit-transition:.1s;transition:.1s}.zmiti-index-main-ui .zmiti-index-btn-group aside img{width:80%}.zmiti-index-main-ui .zmiti-index-btn-group aside.active{-webkit-transform:scale(0.95);transform:scale(0.95)}.zmiti-index-main-ui .zmiti-index-logo{position:absolute;left:1.5rem;width:7rem;-webkit-transition:0.6s 1s;transition:0.6s 1s;-webkit-transform:translate3d(0, -10rem, 0);transform:translate3d(0, -10rem, 0)}.zmiti-index-main-ui .zmiti-index-text{position:absolute;width:8rem;left:1rem;top:1.4rem;-webkit-transform:scale(0);transform:scale(0);-webkit-transition:0.5s 1.9s;transition:0.5s 1.9s}.zmiti-index-main-ui .zmiti-index-read{position:absolute;width:7rem;left:1.5rem;top:41vh;opacity:0}.zmiti-index-main-ui .zmiti-begin-read{width:4rem;text-align:center;line-height:1rem;position:absolute;bottom:1.4rem;left:55%;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;perspective:800px;-webkit-perspective:800px;margin-left:-2rem;opacity:0;-webkit-transition:.4s;transition:.4s}.zmiti-index-main-ui .zmiti-begin-read .zmiti-index-person{position:relative;-webkit-transform:translate3d(0, 0, -61px);transform:translate3d(0, 0, -61px)}.zmiti-index-main-ui .zmiti-begin-read .zmiti-entry-btn{position:absolute;left:0;bottom:0;-webkit-transition:0.1s 2.8;transition:0.1s 2.8;z-index:10}.zmiti-index-main-ui .zmiti-begin-read .zmiti-entry-btn.active{-webkit-transform-origin:left;transform-origin:left;-webkit-transform:rotateY(10deg) translate3d(0, 0, 1px);transform:rotateY(10deg) translate3d(0, 0, 1px)}.zmiti-index-main-ui .zmiti-index-cover{-webkit-transition:.4s;transition:.4s}.zmiti-index-main-ui .zmiti-index-cover.hide{-webkit-transform-origin:center center;transform-origin:center center;-webkit-transform:translate3d(-640px, 0, 0) scale(0.8);transform:translate3d(-640px, 0, 0) scale(0.8)}.zmiti-index-main-ui .zmiti-index-introduce{z-index:1;-webkit-transform:translate3d(640px, 0, 0);transform:translate3d(640px, 0, 0);-webkit-transition:.3s;transition:.3s}.zmiti-index-main-ui .zmiti-index-introduce.active{-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main{width:640px;position:relative;box-sizing:border-box}.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-blue,.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white{width:540px;left:50px;border-radius:20px;top:60px;background:#5d93d8;height:600px;position:absolute}.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white{width:460px;left:90px;height:520px;top:100px;background:#fff;overflow:hidden}.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll{overflow:hidden;position:relative}.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll header{width:200px;margin:20px auto}.zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll>section{width:90%;margin:20px auto;text-indent:2em;line-height:40px}\r\n/*# sourceMappingURL=index.css.map */\r\n", ""]);
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-index-main-ui {\r\n  width: 640px;\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s; }\r\n  .zmiti-index-main-ui.hideleft {\r\n    -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);\r\n    transform: translate3d(-640px, 0, 0) scale(0.8); }\r\n  .zmiti-index-main-ui.show {\r\n    -webkit-transform: scale(1) translate3d(0, 0, 0);\r\n    transform: scale(1) translate3d(0, 0, 0); }\r\n  .zmiti-index-main-ui.hideright {\r\n    -webkit-transform: translate3d(640px, 0, 0) scale(0.8);\r\n    transform: translate3d(640px, 0, 0) scale(0.8); }\r\n  .zmiti-index-main-ui.active .zmiti-index-bg, .zmiti-index-main-ui.active .zmiti-index-text {\r\n    -webkit-transform: scale(1);\r\n    transform: scale(1);\r\n    -webkit-transition-timing-function: cubic-bezier(0.53, 1.64, 0.74, 0.76);\r\n    transition-timing-function: cubic-bezier(0.53, 1.64, 0.74, 0.76); }\r\n  .zmiti-index-main-ui.active .zmiti-index-logo {\r\n    -webkit-transition-timing-function: cubic-bezier(0.53, 1.64, 0.74, 0.76);\r\n    transition-timing-function: cubic-bezier(0.53, 1.64, 0.74, 0.76);\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n    transform: translate3d(0, 0, 0); }\r\n  .zmiti-index-main-ui.active .zmiti-entry-btn {\r\n    opacity: 1; }\r\n  .zmiti-index-main-ui.active .zmiti-begin-read {\r\n    opacity: 1;\r\n    -webkit-transition: 1s 2.8s;\r\n    transition: 1s 2.8s; }\r\n  .zmiti-index-main-ui.active .zmiti-index-read {\r\n    opacity: 1;\r\n    -webkit-transition: 1s 2.8s;\r\n    transition: 1s 2.8s; }\r\n  .zmiti-index-main-ui .zmiti-index-bg {\r\n    position: absolute;\r\n    width: 640px;\r\n    height: 1200px;\r\n    left: 50%;\r\n    margin-left: -320px;\r\n    top: 50%;\r\n    margin-top: -600px;\r\n    -webkit-transform: scale(0);\r\n    transform: scale(0);\r\n    -webkit-transition: 0.4s 0.5s;\r\n    transition: 0.4s 0.5s; }\r\n    .zmiti-index-main-ui .zmiti-index-bg img {\r\n      height: 100%;\r\n      width: 640px; }\r\n    .zmiti-index-main-ui .zmiti-index-bg.active {\r\n      -webkit-transform: scale(1);\r\n      transform: scale(1); }\r\n  .zmiti-index-main-ui .zmiti-index-btn-group {\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal;\r\n    position: absolute;\r\n    width: 100%;\r\n    bottom: .2rem; }\r\n    .zmiti-index-main-ui .zmiti-index-btn-group aside {\r\n      text-align: center;\r\n      -webkit-box-flex: 1;\r\n      -webkit-transition: 0.1s;\r\n      transition: 0.1s; }\r\n      .zmiti-index-main-ui .zmiti-index-btn-group aside img {\r\n        width: 80%; }\r\n      .zmiti-index-main-ui .zmiti-index-btn-group aside.active {\r\n        -webkit-transform: scale(0.95);\r\n        transform: scale(0.95); }\r\n  .zmiti-index-main-ui .zmiti-index-logo {\r\n    position: absolute;\r\n    left: 1.5rem;\r\n    width: 7rem;\r\n    -webkit-transition: 0.6s 1s;\r\n    transition: 0.6s 1s;\r\n    -webkit-transform: translate3d(0, -10rem, 0);\r\n    transform: translate3d(0, -10rem, 0); }\r\n  .zmiti-index-main-ui .zmiti-index-text {\r\n    position: absolute;\r\n    width: 8rem;\r\n    left: 1rem;\r\n    top: 1.4rem;\r\n    -webkit-transform: scale(0);\r\n    transform: scale(0);\r\n    -webkit-transition: 0.5s 1.9s;\r\n    transition: 0.5s 1.9s; }\r\n  .zmiti-index-main-ui .zmiti-index-read {\r\n    position: absolute;\r\n    width: 7rem;\r\n    left: 1.5rem;\r\n    top: 41vh;\r\n    opacity: 0; }\r\n  .zmiti-index-main-ui .zmiti-begin-read {\r\n    width: 4rem;\r\n    text-align: center;\r\n    line-height: 1rem;\r\n    position: absolute;\r\n    bottom: 1.4rem;\r\n    left: 55%;\r\n    -webkit-transform-style: preserve-3d;\r\n    transform-style: preserve-3d;\r\n    perspective: 800px;\r\n    -webkit-perspective: 800px;\r\n    margin-left: -2rem;\r\n    opacity: 0;\r\n    -webkit-transition: 0.4s;\r\n    transition: 0.4s; }\r\n    .zmiti-index-main-ui .zmiti-begin-read .zmiti-index-person {\r\n      position: relative;\r\n      -webkit-transform: translate3d(0, 0, -61px);\r\n      transform: translate3d(0, 0, -61px); }\r\n    .zmiti-index-main-ui .zmiti-begin-read .zmiti-entry-btn {\r\n      position: absolute;\r\n      left: 0;\r\n      bottom: 0;\r\n      -webkit-transition: 0.1s 2.8;\r\n      transition: 0.1s 2.8;\r\n      z-index: 10; }\r\n      .zmiti-index-main-ui .zmiti-begin-read .zmiti-entry-btn.active {\r\n        -webkit-transform-origin: left;\r\n        transform-origin: left;\r\n        -webkit-transform: rotateY(10deg) translate3d(0, 0, 1px);\r\n        transform: rotateY(10deg) translate3d(0, 0, 1px); }\r\n  .zmiti-index-main-ui .zmiti-index-cover {\r\n    -webkit-transition: 0.4s;\r\n    transition: 0.4s; }\r\n    .zmiti-index-main-ui .zmiti-index-cover.hide {\r\n      -webkit-transform-origin: center center;\r\n      transform-origin: center center;\r\n      -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);\r\n      transform: translate3d(-640px, 0, 0) scale(0.8); }\r\n  .zmiti-index-main-ui .zmiti-index-introduce {\r\n    z-index: 1;\r\n    -webkit-transform: translate3d(640px, 0, 0);\r\n    transform: translate3d(640px, 0, 0);\r\n    -webkit-transition: 0.3s;\r\n    transition: 0.3s; }\r\n    .zmiti-index-main-ui .zmiti-index-introduce.active {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main {\r\n      width: 640px;\r\n      position: relative;\r\n      box-sizing: border-box; }\r\n      .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-blue, .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white {\r\n        width: 540px;\r\n        left: 50px;\r\n        border-radius: 20px;\r\n        top: 60px;\r\n        background: #5d93d8;\r\n        height: 600px;\r\n        position: absolute; }\r\n      .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white {\r\n        width: 460px;\r\n        left: 90px;\r\n        height: 520px;\r\n        top: 100px;\r\n        background: #fff;\r\n        overflow: hidden; }\r\n        .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll {\r\n          overflow: hidden;\r\n          position: relative; }\r\n          .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll header {\r\n            width: 200px;\r\n            margin: 20px auto; }\r\n          .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll > section {\r\n            width: 90%;\r\n            margin: 20px auto;\r\n            text-indent: 2em;\r\n            line-height: 40px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
 
 	// exports
 
@@ -35551,7 +35580,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-header-main-ui {\r\n  width: 640px;\r\n  height: 100px;\r\n  background: #fff; }\r\n  .zmiti-header-main-ui .zmiti-index-header {\r\n    width: 580px;\r\n    height: 78px;\r\n    margin: 0 auto;\r\n    padding-top: 9px;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal; }\r\n    .zmiti-header-main-ui .zmiti-index-header > section {\r\n      -webkit-box-flex: 1; }\r\n      .zmiti-header-main-ui .zmiti-index-header > section:last-of-type {\r\n        text-align: right; }\r\n        .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry {\r\n          border: 1px solid #bbb;\r\n          text-align: center;\r\n          padding: 10px 0;\r\n          width: 150px;\r\n          color: #999;\r\n          margin: 0 auto;\r\n          border-radius: 30px; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry img {\r\n            width: 30px;\r\n            margin-right: 6px;\r\n            vertical-align: bottom; }\r\n            .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry img.zmiti-rotate {\r\n              -webkit-animation: rotate 1s linear infinite;\r\n              animation: rotate 1s linear infinite; }\r\n      .zmiti-header-main-ui .zmiti-index-header > section:first-of-type {\r\n        display: -webkit-box;\r\n        -webkit-box-align: center;\r\n        -webkit-box-pack: center;\r\n        -webkit-box-orient: horizontal;\r\n        -webkit-box-pack: start;\r\n        -webkit-box-align: start; }\r\n        .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-headimg {\r\n          width: 78px;\r\n          height: 78px;\r\n          border-radius: 50%;\r\n          position: relative; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-headimg:before {\r\n            content: '';\r\n            position: absolute;\r\n            width: 100%;\r\n            height: 100%;\r\n            left: 0;\r\n            top: 0;\r\n            border-radius: 50%;\r\n            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4); }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-headimg img {\r\n            border-radius: 50%; }\r\n        .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info {\r\n          width: auto;\r\n          text-align: left;\r\n          margin-top: 0;\r\n          margin-left: 10px; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info .zmiti-line img {\r\n            width: 100%;\r\n            vertical-align: top; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info > div:nth-of-type(1) {\r\n            font-size: 28px; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info > div:nth-of-type(2) {\r\n            font-size: 30px;\r\n            color: #7d6548;\r\n            margin: 5px 0 10px 0; }\r\n            .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info > div:nth-of-type(2) img {\r\n              width: 40px;\r\n              margin-right: 10px;\r\n              vertical-align: top; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\n\r\n/*# sourceMappingURL=header.css.map */", ""]);
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-header-main-ui {\r\n  width: 640px;\r\n  height: 100px;\r\n  background: #fff; }\r\n  .zmiti-header-main-ui .zmiti-index-header {\r\n    width: 580px;\r\n    height: 78px;\r\n    margin: 0 auto;\r\n    padding-top: 9px;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal; }\r\n    .zmiti-header-main-ui .zmiti-index-header > section {\r\n      -webkit-box-flex: 1; }\r\n      .zmiti-header-main-ui .zmiti-index-header > section:last-of-type {\r\n        display: -webkit-box;\r\n        -webkit-box-align: center;\r\n        -webkit-box-pack: center;\r\n        -webkit-box-orient: horizontal; }\r\n        .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry {\r\n          border: 1px solid #bbb;\r\n          text-align: center;\r\n          padding: 10px 0;\r\n          width: 150px;\r\n          color: #999;\r\n          margin-left: 200px;\r\n          border-radius: 30px; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry img {\r\n            width: 30px;\r\n            margin-right: 6px;\r\n            vertical-align: bottom; }\r\n            .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry img.zmiti-rotate {\r\n              -webkit-animation: rotate 1s linear infinite;\r\n              animation: rotate 1s linear infinite; }\r\n      .zmiti-header-main-ui .zmiti-index-header > section:first-of-type {\r\n        display: -webkit-box;\r\n        -webkit-box-align: center;\r\n        -webkit-box-pack: center;\r\n        -webkit-box-orient: horizontal;\r\n        -webkit-box-pack: start;\r\n        -webkit-box-align: start; }\r\n        .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-headimg {\r\n          width: 78px;\r\n          height: 78px;\r\n          border-radius: 50%;\r\n          position: relative; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-headimg:before {\r\n            content: '';\r\n            position: absolute;\r\n            width: 100%;\r\n            height: 100%;\r\n            left: 0;\r\n            top: 0;\r\n            border-radius: 50%;\r\n            box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4); }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-headimg img {\r\n            border-radius: 50%; }\r\n        .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info {\r\n          width: auto;\r\n          text-align: left;\r\n          margin-top: 0;\r\n          margin-left: 10px; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info .zmiti-line img {\r\n            width: 100%;\r\n            vertical-align: top; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info > div:nth-of-type(1) {\r\n            font-size: 28px; }\r\n          .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info > div:nth-of-type(2) {\r\n            font-size: 30px;\r\n            color: #7d6548;\r\n            margin: 5px 0 10px 0; }\r\n            .zmiti-header-main-ui .zmiti-index-header > section:first-of-type > section.zmiti-user-info > div:nth-of-type(2) img {\r\n              width: 40px;\r\n              margin-right: 10px;\r\n              vertical-align: top; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\n\r\n/*# sourceMappingURL=header.css.map */", ""]);
 
 	// exports
 
@@ -35568,7 +35597,7 @@
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+	var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -35603,7 +35632,9 @@
 				beginTest: false,
 				imgW: 0,
 				transformY: 0,
-				isEntry: true
+				isEntry: true,
+				score: 0,
+				contentClass: 'hideright'
 			};
 			this.viewW = document.documentElement.clientWidth;
 			this.viewH = document.documentElement.clientHeight;
@@ -35622,13 +35653,9 @@
 
 				};
 
-				var intrStyle = '';
-				if (this.state.isEntry) {
-					intrStyle = 'active';
-				}
 				return _react2['default'].createElement(
 					'div',
-					{ className: 'zmiti-content-main-ui lt-full', style: bgStyle },
+					{ className: 'zmiti-content-main-ui lt-full ' + this.state.contentClass, style: bgStyle },
 					_react2['default'].createElement(_componentsHeaderZmitiHeaderJsx2['default'], this.props),
 					_react2['default'].createElement(
 						'section',
@@ -35667,6 +35694,92 @@
 				);
 			}
 		}, {
+			key: 'changeURLPar',
+			value: function changeURLPar(destiny, par, par_value) {
+				var pattern = par + '=([^&]*)';
+				var replaceText = par + '=' + par_value;
+				if (destiny.match(pattern)) {
+					var tmp = '/\\' + par + '=[^&]*/';
+					tmp = destiny.replace(eval(tmp), replaceText);
+					return tmp;
+				} else {
+					if (destiny.match('[\?]')) {
+						return destiny + '&' + replaceText;
+					} else {
+						return destiny + '?' + replaceText;
+					}
+				}
+				return destiny + '\n' + par + '\n' + par_value;
+			}
+		}, {
+			key: 'wxConfig',
+			value: function wxConfig(title, desc, img) {
+				var appId = arguments.length <= 3 || arguments[3] === undefined ? 'wxfacf4a639d9e3bcc' : arguments[3];
+				var worksid = arguments.length <= 4 || arguments[4] === undefined ? this.props.worksid : arguments[4];
+
+				var s = this;
+
+				var durl = location.href.split('#')[0]; //+symbol+'id='+this.state.id+'&wxopenid='+ this.props.openid; //window.location;
+				durl = s.changeURLPar(durl, 'id', s.state.id);
+				durl = s.changeURLPar(durl, 'wxopenid', s.props.openid);
+
+				//durl = durl + symbol + 'id=' + s.state.id + '&wxopenid=' + s.props.openid;
+				var code_durl = encodeURIComponent(durl);
+				/*if (s.props.id && s.props.parentWxopenId) {
+	   	
+	   }*/
+
+				_jquery2['default'].ajax({
+					type: 'get',
+					url: "http://api.zmiti.com/weixin/jssdk.php?type=signature&durl=" + code_durl + "&worksid=" + worksid,
+					dataType: 'jsonp',
+					jsonp: "callback",
+					jsonpCallback: "jsonFlickrFeed",
+					success: function success(data) {
+						wx.config({
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端window.debug && alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							appId: appId, // 必填，公众号的唯一标识
+							timestamp: '1488558145', // 必填，生成签名的时间戳
+							nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+							signature: data.signature, // 必填，签名，见附录1
+							jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem', 'translateVoice', 'startRecord', 'stopRecord', 'onRecordEnd', 'playVoice', 'pauseVoice', 'stopVoice', 'uploadVoice', 'downloadVoice', 'chooseImage', 'previewImage', 'uploadImage', 'downloadImage', 'getNetworkType', 'openLocation', 'getLocation', 'hideOptionMenu', 'showOptionMenu', 'closeWindow', 'scanQRCode', 'chooseWXPay', 'openProductSpecificView'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+						});
+
+						wx.ready(function () {
+							//朋友圈
+							wx.onMenuShareTimeline({
+								title: title, // 分享标题
+								link: durl, // 分享链接
+								imgUrl: img, // 分享图标
+								desc: desc,
+								success: function success() {},
+								cancel: function cancel() {}
+							});
+							//朋友
+							wx.onMenuShareAppMessage({
+								title: title, // 分享标题
+								link: durl, // 分享链接
+								imgUrl: img, // 分享图标
+								type: "link",
+								dataUrl: "",
+								desc: desc,
+								success: function success() {},
+								cancel: function cancel() {}
+							});
+							//qq
+							wx.onMenuShareQQ({
+								title: title, // 分享标题
+								link: durl, // 分享链接
+								imgUrl: img, // 分享图标
+								desc: desc,
+								success: function success() {},
+								cancel: function cancel() {}
+							});
+						});
+					}
+				});
+			}
+		}, {
 			key: 'componentWillMount',
 			value: function componentWillMount() {}
 		}, {
@@ -35698,10 +35811,10 @@
 					success: function success(res) {
 
 						s.localId = res.localId;
-						/*obserable.trigger({
-	     	type:'getLocalId',
-	     	data:s.localId
-	     });*/
+						obserable.trigger({
+							type: 'getLocalId',
+							data: s.localId
+						});
 						//开始转文字。
 						wx.translateVoice({
 							localId: s.localId, // 需要识别的音频的本地Id，由录音相关接口获得
@@ -35714,7 +35827,7 @@
 							},
 							success: function success(res) {
 								//转成功了。
-
+								var serverId = res.serverId; // 返回音频的服务器端ID
 								var poetryContent = s.props.poetryContent.replace(/[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5]/ig, '');
 
 								var dataArr = res.translateResult.replace(/[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5]/ig, '').split('');
@@ -35737,12 +35850,117 @@
 								if (res.translateResult.length > poetryContent.length && score >= 100) {
 									score = 99;
 								}
-								alert(score);
-								obserable.trigger({ type: 'updateScore', data: score });
+
 								obserable.trigger({
 									type: 'getTransformResult',
-									data: resultHtml
+									data: res.translateResult.replace(/[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5]/ig, '')
 								});
+
+								obserable.trigger({
+									type: 'toggleResult',
+									data: 'active'
+								});
+								s.setState({
+									contentClass: 'hideleft'
+								});
+
+								obserable.trigger({ type: 'updateScore', data: score });
+								wx.uploadVoice({
+									localId: s.localId, // 需要上传的音频的本地ID，由stopRecord接口获得
+									isShowProgressTips: 0, // 默认为1，显示进度提示
+									fail: function fail() {
+										window.debug && alert('上传失败');
+									},
+									success: function success(res) {
+										var serverId = res.serverId; // 返回音频的服务器端ID
+
+										_jquery2['default'].ajax({
+											url: 'http://api.zmiti.com/v2/weixin/post_shiciresult/',
+											type: 'post',
+											data: {
+												worksid: s.props.worksid,
+												workdataid: s.props.workdataid,
+												wxopenid: s.props.openid,
+												parentwxopenid: s.props.parentWxopenId,
+												mediaid: serverId,
+												score: score,
+												duration: s.props.duration,
+												changetext: s.props.transformResult.replace(/<[^>]+>/g, ""),
+												usercity: s.props.usercity,
+												longitude: s.props.longitude,
+												latitude: s.props.latitude,
+												wxname: s.props.nickname,
+												workdatatitle: s.props.poetryTitle
+											},
+											error: function error() {
+												alert('post_shiciresult error 接口错误');
+											},
+											success: function success(data) {
+
+												if (data.getret === 0) {
+
+													var id = data.id;
+													/*obserable.trigger({
+	            	type:'updateParentInfo',
+	            	data:{
+	            		id,
+	            		parentWxopenId:s.props.openid
+	            	}
+	            });*/
+
+													obserable.trigger({
+														type: 'showToast',
+														data: '提交成功'
+													});
+
+													s.setState({
+														id: id
+													}, function () {
+														setTimeout(function () {
+															s.wxConfig(s.props.nickname + '为你朗读了一首诗', '千山万水总是情，为你读诗行不行。远方的朋友用家乡话为你读了首诗，你能猜出原诗吗？', s.props.data.shareImg, s.props.wxappid);
+														}, 500);
+													});
+
+													var integral = 10;
+													_jquery2['default'].ajax({
+														url: 'http://api.zmiti.com/v2/weixin/add_wxuser/',
+														type: 'post',
+														data: {
+															wxopenid: s.props.openid,
+															worksid: s.props.worksid,
+															nickname: s.props.nickname,
+															headimgurl: s.props.headimgurl,
+															longitude: s.props.longitude,
+															latitude: s.props.latitude,
+															accuracy: s.props.accuracy,
+															wxappid: s.props.wxappid,
+															integral: integral
+														},
+														error: function error() {
+															window.debug && alert('add_wxuser 服务器返回错误');
+														},
+														success: function success(data) {
+
+															if (data.getret === 0) {
+
+																obserable.trigger({
+																	type: 'updateIntegral',
+																	data: integral
+																});
+															}
+														}
+													});
+												}
+											}
+										});
+									}
+								});
+
+								/*
+	          	obserable.trigger({
+	          		type:'getTransformResult',
+	          		data:resultHtml
+	          	});*/
 							}
 						});
 					}
@@ -35750,7 +35968,17 @@
 			}
 		}, {
 			key: 'componentDidMount',
-			value: function componentDidMount() {}
+			value: function componentDidMount() {
+				var _this = this;
+
+				var obserable = this.props.obserable;
+
+				obserable.on('toggleContent', function (data) {
+					_this.setState({
+						contentClass: data
+					});
+				});
+			}
 		}]);
 
 		return ZmitiContentApp;
@@ -35794,7 +36022,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-content-main-ui {\r\n  width: 640px;\r\n  z-index: 10;\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s; }\r\n  .zmiti-content-main-ui.hide {\r\n    -webkit-transform: scale(0.8) translate3d(-640px, 0, 0);\r\n    transform: scale(0.8) translate3d(-640px, 0, 0); }\r\n  .zmiti-content-main-ui .zmiti-content-main {\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    position: relative; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-index-voice {\r\n      position: absolute;\r\n      width: 184px;\r\n      top: 534px;\r\n      left: 50%;\r\n      margin-left: -97px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-ty {\r\n      display: -webkit-box;\r\n      -webkit-box-align: center;\r\n      -webkit-box-pack: center;\r\n      -webkit-box-orient: horizontal;\r\n      position: relative;\r\n      width: 500px;\r\n      height: 550px;\r\n      border-radius: 10px;\r\n      background: #fff;\r\n      left: 70px;\r\n      top: 120px;\r\n      overflow: hidden; }\r\n      .zmiti-content-main-ui .zmiti-content-main .zmiti-content-ty h3 {\r\n        text-align: center;\r\n        font-size: 34px;\r\n        margin: 20px auto; }\r\n      .zmiti-content-main-ui .zmiti-content-main .zmiti-content-ty .zmiti-content-ty-content {\r\n        width: 90%;\r\n        margin: 0 auto;\r\n        line-height: 50px;\r\n        font-size: 30px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-begin-read-btn {\r\n      margin: 140px auto 30px;\r\n      width: 200px;\r\n      background: #00afff;\r\n      text-align: center;\r\n      color: #fff;\r\n      padding: 10px 50px;\r\n      border-radius: 40px;\r\n      font-size: 30px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-reset {\r\n      width: 200px;\r\n      margin: 0 auto;\r\n      text-decoration: underline;\r\n      padding: 10px 20px;\r\n      text-align: center;\r\n      color: #00afff;\r\n      font-size: 30px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-person {\r\n      width: 300px;\r\n      z-index: 10;\r\n      left: 40px;\r\n      position: absolute; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-content-main-ui {\r\n  width: 640px;\r\n  z-index: 10;\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s;\r\n  -webkit-transform: translate3d(640px, 0, 0) scale(0.8);\r\n  transform: translate3d(640px, 0, 0) scale(0.8); }\r\n  .zmiti-content-main-ui.hideleft {\r\n    -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);\r\n    transform: translate3d(-640px, 0, 0) scale(0.8); }\r\n  .zmiti-content-main-ui.active {\r\n    -webkit-transform: scale(1) translate3d(0, 0, 0);\r\n    transform: scale(1) translate3d(0, 0, 0); }\r\n  .zmiti-content-main-ui.hideright {\r\n    -webkit-transform: translate3d(640px, 0, 0) scale(0.8);\r\n    transform: translate3d(640px, 0, 0) scale(0.8); }\r\n  .zmiti-content-main-ui .zmiti-content-main {\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    position: relative; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-index-voice {\r\n      position: absolute;\r\n      width: 184px;\r\n      top: 534px;\r\n      left: 50%;\r\n      margin-left: -97px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-ty {\r\n      display: -webkit-box;\r\n      -webkit-box-align: center;\r\n      -webkit-box-pack: center;\r\n      -webkit-box-orient: horizontal;\r\n      position: relative;\r\n      width: 500px;\r\n      height: 550px;\r\n      border-radius: 10px;\r\n      background: #fff;\r\n      left: 70px;\r\n      top: 120px;\r\n      overflow: hidden; }\r\n      .zmiti-content-main-ui .zmiti-content-main .zmiti-content-ty h3 {\r\n        text-align: center;\r\n        font-size: 34px;\r\n        margin: 20px auto; }\r\n      .zmiti-content-main-ui .zmiti-content-main .zmiti-content-ty .zmiti-content-ty-content {\r\n        width: 90%;\r\n        margin: 0 auto;\r\n        line-height: 50px;\r\n        font-size: 30px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-begin-read-btn {\r\n      margin: 140px auto 30px;\r\n      width: 200px;\r\n      background: #00afff;\r\n      text-align: center;\r\n      color: #fff;\r\n      padding: 10px 50px;\r\n      border-radius: 40px;\r\n      font-size: 30px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-reset {\r\n      width: 200px;\r\n      margin: 0 auto;\r\n      text-decoration: underline;\r\n      padding: 10px 20px;\r\n      text-align: center;\r\n      color: #00afff;\r\n      font-size: 30px; }\r\n    .zmiti-content-main-ui .zmiti-content-main .zmiti-content-person {\r\n      width: 300px;\r\n      z-index: 10;\r\n      left: 40px;\r\n      position: absolute; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
 
 	// exports
 
@@ -35835,6 +36063,10 @@
 
 	var _componentsHeaderZmitiHeaderJsx2 = _interopRequireDefault(_componentsHeaderZmitiHeaderJsx);
 
+	var _componentsHeaderZmitiAudioJsx = __webpack_require__(208);
+
+	var _componentsHeaderZmitiAudioJsx2 = _interopRequireDefault(_componentsHeaderZmitiAudioJsx);
+
 	var ZmitiResultApp = (function (_Component) {
 		_inherits(ZmitiResultApp, _Component);
 
@@ -35842,7 +36074,9 @@
 			_classCallCheck(this, ZmitiResultApp);
 
 			_get(Object.getPrototypeOf(ZmitiResultApp.prototype), 'constructor', this).call(this, props);
-			this.state = {};
+			this.state = {
+				resultClass: 'hideright'
+			};
 			this.viewW = document.documentElement.clientWidth;
 			this.viewH = document.documentElement.clientHeight;
 		}
@@ -35858,7 +36092,7 @@
 				};
 				return _react2['default'].createElement(
 					'div',
-					{ className: 'zmiti-result-main-ui lt-full  ' + (this.state.showResult ? 'show' : ''), style: mainStyle },
+					{ className: 'zmiti-result-main-ui lt-full  ' + this.state.resultClass, style: mainStyle },
 					_react2['default'].createElement(_componentsHeaderZmitiHeaderJsx2['default'], this.props),
 					_react2['default'].createElement(
 						'section',
@@ -35883,8 +36117,9 @@
 								_react2['default'].createElement(
 									'div',
 									{ className: 'zmiti-result-age' },
-									this.props.age
-								)
+									this.state.age
+								),
+								_react2['default'].createElement(_componentsHeaderZmitiAudioJsx2['default'], this.props)
 							)
 						),
 						_react2['default'].createElement(
@@ -35926,29 +36161,41 @@
 			value: function componentDidMount() {
 				var _this2 = this;
 
-				var obserable = this.props.obserable;
-
-				obserable.on('setResultScroll', function () {
-					var IScroll = _this2.props.IScroll;
-
-					_this2.scroll = new IScroll(_this2.refs['zmiti-dangjian-reuslt-C'], {
-						scrollbars: true
-					});
-					setTimeout(function () {
-						_this2.scroll.refresh();
-					}, 1000);
-				});
+				var _props = this.props;
+				var obserable = _props.obserable;
+				var IScroll = _props.IScroll;
 
 				obserable.on('toggleResult', function (data) {
-					if (data) {
-						obserable.trigger({
-							type: 'setResultScroll'
-						});
-					}
 					_this2.setState({
-						showResult: data
+						resultClass: data
 					});
 				});
+
+				obserable.on('updateScore', function (data) {
+					_this2.setState({
+						score: data
+					}, function () {
+
+						var age = 40;
+						age = Math.random() * data | 0;
+						age >= 30 && (age = Math.random() * 30 | 0);
+						age <= 5 && (age = Math.random() * 10 | 0 + 5);
+						_this2.setState({
+							age: age
+						});
+					});
+					obserable.trigger({
+						type: 'getScale',
+						data: data + (Math.random() * 4 | 0 + 1)
+					});
+				});
+
+				/*this.scroll = new IScroll(this.refs['zmiti-result-scroll'],{
+	   	scrollbars:true
+	   });
+	   		setTimeout(()=>{
+	   	this.scroll.refresh();
+	   },800)*/
 			}
 		}]);
 
@@ -35993,7 +36240,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-result-main-ui {\r\n  z-index: 10;\r\n  -webkit-transition: 0.4s;\r\n  transition: 0.4s; }\r\n  .zmiti-result-main-ui.show {\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n    transform: translate3d(0, 0, 0);\r\n    z-index: 115001; }\r\n  .zmiti-result-main-ui .zmiti-result-main {\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    position: relative; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-index-voice {\r\n      position: absolute;\r\n      width: 184px;\r\n      top: 534px;\r\n      left: 50%;\r\n      margin-left: -97px; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty {\r\n      display: -webkit-box;\r\n      -webkit-box-align: center;\r\n      -webkit-box-pack: center;\r\n      -webkit-box-orient: horizontal;\r\n      position: relative;\r\n      width: 500px;\r\n      height: 550px;\r\n      border-radius: 10px;\r\n      left: 70px;\r\n      top: 120px;\r\n      overflow: hidden; }\r\n      .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty .zmiti-result-age {\r\n        position: absolute;\r\n        top: 0;\r\n        font-size: 200px;\r\n        color: #ff4800;\r\n        right: 100px;\r\n        background: #fff;\r\n        text-align: center;\r\n        top: 90px;\r\n        width: 220px;\r\n        font-weight: bold; }\r\n      .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty .zmiti-result-text {\r\n        position: absolute;\r\n        top: 30px;\r\n        left: 30px;\r\n        font-size: 28px; }\r\n        .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty .zmiti-result-text span {\r\n          color: #00adfc;\r\n          font-size: 30px; }\r\n      .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty > div {\r\n        width: 100%;\r\n        box-sizing: border-box;\r\n        position: relative; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-begin-read-btn {\r\n      margin: 140px auto 30px;\r\n      width: 240px;\r\n      background: #00afff;\r\n      text-align: center;\r\n      color: #fff;\r\n      padding: 10px 50px;\r\n      border-radius: 40px;\r\n      font-size: 30px; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-reset {\r\n      width: 200px;\r\n      margin: 0 auto;\r\n      text-decoration: underline;\r\n      padding: 10px 20px;\r\n      text-align: center;\r\n      color: #00afff;\r\n      font-size: 30px; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-person {\r\n      width: 300px;\r\n      z-index: 10;\r\n      left: 40px;\r\n      position: absolute; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-result-main-ui {\r\n  z-index: 10;\r\n  -webkit-transition: 0.4s;\r\n  transition: 0.4s; }\r\n  .zmiti-result-main-ui.active {\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n    transform: translate3d(0, 0, 0);\r\n    z-index: 115001; }\r\n  .zmiti-result-main-ui.hideleft {\r\n    -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);\r\n    transform: translate3d(-640px, 0, 0) scale(0.8); }\r\n  .zmiti-result-main-ui.active {\r\n    -webkit-transform: scale(1) translate3d(0, 0, 0);\r\n    transform: scale(1) translate3d(0, 0, 0); }\r\n  .zmiti-result-main-ui.hideright {\r\n    -webkit-transform: translate3d(640px, 0, 0) scale(0.8);\r\n    transform: translate3d(640px, 0, 0) scale(0.8); }\r\n  .zmiti-result-main-ui .zmiti-result-main {\r\n    width: 100%;\r\n    box-sizing: border-box;\r\n    position: relative; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-index-voice {\r\n      position: absolute;\r\n      width: 184px;\r\n      top: 534px;\r\n      left: 50%;\r\n      margin-left: -97px; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty {\r\n      display: -webkit-box;\r\n      -webkit-box-align: center;\r\n      -webkit-box-pack: center;\r\n      -webkit-box-orient: horizontal;\r\n      position: relative;\r\n      width: 500px;\r\n      height: 550px;\r\n      border-radius: 10px;\r\n      left: 70px;\r\n      top: 120px;\r\n      overflow: hidden; }\r\n      .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty .zmiti-result-age {\r\n        position: absolute;\r\n        top: 0;\r\n        font-size: 200px;\r\n        color: #ff4800;\r\n        right: 100px;\r\n        background: #fff;\r\n        text-align: center;\r\n        top: 90px;\r\n        width: 220px;\r\n        font-weight: bold; }\r\n      .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty .zmiti-result-text {\r\n        position: absolute;\r\n        top: 30px;\r\n        left: 30px;\r\n        font-size: 28px; }\r\n        .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty .zmiti-result-text span {\r\n          color: #00adfc;\r\n          font-size: 30px; }\r\n      .zmiti-result-main-ui .zmiti-result-main .zmiti-result-ty > div {\r\n        width: 100%;\r\n        box-sizing: border-box;\r\n        position: relative; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-begin-read-btn {\r\n      margin: 140px auto 30px;\r\n      width: 240px;\r\n      background: #00afff;\r\n      text-align: center;\r\n      color: #fff;\r\n      padding: 10px 50px;\r\n      border-radius: 40px;\r\n      font-size: 30px; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-reset {\r\n      width: 200px;\r\n      margin: 0 auto;\r\n      text-decoration: underline;\r\n      padding: 10px 20px;\r\n      text-align: center;\r\n      color: #00afff;\r\n      font-size: 30px; }\r\n    .zmiti-result-main-ui .zmiti-result-main .zmiti-result-person {\r\n      width: 300px;\r\n      z-index: 10;\r\n      left: 40px;\r\n      position: absolute; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
 
 	// exports
 
@@ -36046,6 +36293,251 @@
 
 	exports["default"] = Obserable;
 	module.exports = exports["default"];
+
+/***/ },
+/* 208 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _publicPubJsx = __webpack_require__(192);
+
+	__webpack_require__(209);
+
+	var _jquery = __webpack_require__(185);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var ZmitiAudioApp = (function (_Component) {
+		_inherits(ZmitiAudioApp, _Component);
+
+		function ZmitiAudioApp(props) {
+			_classCallCheck(this, ZmitiAudioApp);
+
+			_get(Object.getPrototypeOf(ZmitiAudioApp.prototype), 'constructor', this).call(this, props);
+			this.state = {
+				pause: true
+			};
+		}
+
+		_createClass(ZmitiAudioApp, [{
+			key: 'render',
+			value: function render() {
+				return _react2['default'].createElement(
+					'div',
+					{ className: 'zmiti-audio-main-ui ' + (this.props.className || '') },
+					_react2['default'].createElement(
+						'section',
+						{ className: 'zmiti-audio-C', onTouchTap: this.playAudio.bind(this) },
+						_react2['default'].createElement(
+							'aside',
+							null,
+							_react2['default'].createElement('img', { src: './assets/images/pause.' + (this.state.pause ? 'png' : 'gif') + '' }),
+							'点我收听'
+						),
+						_react2['default'].createElement(
+							'aside',
+							null,
+							this.props.duration || 0,
+							'\''
+						)
+					)
+				);
+			}
+		}, {
+			key: 'playAudio',
+			value: function playAudio() {
+				var s = this;
+				if (this.state.pause) {
+					this.setState({
+						pause: false
+					}, function () {
+						wx.playVoice({
+							localId: s.props.audioSrc
+						});
+						wx.onVoicePlayEnd({
+							success: function success(res) {
+								var localId = res.localId; // 返回音频的本地ID
+								s.setState({
+									pause: true
+								});
+							}
+						});
+					});
+				}
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {}
+		}]);
+
+		return ZmitiAudioApp;
+	})(_react.Component);
+
+	exports['default'] = (0, _publicPubJsx.PubCom)(ZmitiAudioApp);
+	module.exports = exports['default'];
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(210);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(190)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!./audio.css", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!./audio.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(189)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-audio-main-ui {\r\n  -webkit-transform: scale(0.8);\r\n  transform: scale(0.8);\r\n  width: 500px;\r\n  background: #fff;\r\n  height: 62px;\r\n  line-height: 62px;\r\n  border: 1px solid #00afff;\r\n  border-radius: 30px;\r\n  margin: 38px auto 0; }\r\n  .zmiti-audio-main-ui.zmiti-audio-custom {\r\n    width: 100%;\r\n    height: 40px;\r\n    line-height: 40px;\r\n    margin: 0 auto; }\r\n    .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C {\r\n      width: 220px;\r\n      margin: 0 auto;\r\n      height: 100%;\r\n      display: -webkit-box;\r\n      -webkit-box-align: center;\r\n      -webkit-box-pack: center;\r\n      -webkit-box-orient: horizontal; }\r\n      .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside {\r\n        -webkit-box-flex: 1;\r\n        color: #00afff;\r\n        font-size: 20px; }\r\n        .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside img {\r\n          width: 40px;\r\n          vertical-align: middle;\r\n          margin-right: 10px;\r\n          margin-left: 20px; }\r\n        .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside:last-of-type {\r\n          text-align: right;\r\n          margin-right: 10px; }\r\n  .zmiti-audio-main-ui .zmiti-audio-C {\r\n    width: 440px;\r\n    margin: 0 auto;\r\n    height: 100%;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal; }\r\n    .zmiti-audio-main-ui .zmiti-audio-C > aside {\r\n      -webkit-box-flex: 1;\r\n      color: #00afff; }\r\n      .zmiti-audio-main-ui .zmiti-audio-C > aside img {\r\n        width: 70px;\r\n        vertical-align: middle;\r\n        margin-right: 10px; }\r\n      .zmiti-audio-main-ui .zmiti-audio-C > aside:last-of-type {\r\n        text-align: right; }\r\n\r\n/*# sourceMappingURL=audio.css.map */", ""]);
+
+	// exports
+
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _publicPubJsx = __webpack_require__(192);
+
+	__webpack_require__(212);
+
+	var _jquery = __webpack_require__(185);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var ZmitiToastApp = (function (_Component) {
+		_inherits(ZmitiToastApp, _Component);
+
+		function ZmitiToastApp(props) {
+			_classCallCheck(this, ZmitiToastApp);
+
+			_get(Object.getPrototypeOf(ZmitiToastApp.prototype), 'constructor', this).call(this, props);
+			this.state = {};
+			this.viewW = document.documentElement.clientWidth;
+			this.viewH = document.documentElement.clientHeight;
+		}
+
+		_createClass(ZmitiToastApp, [{
+			key: 'render',
+			value: function render() {
+				return _react2['default'].createElement(
+					'div',
+					{ style: { display: this.props.toast ? 'block' : 'none' }, className: 'zmiti-toast-main-ui' },
+					this.props.toast || ''
+				);
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {}
+		}]);
+
+		return ZmitiToastApp;
+	})(_react.Component);
+
+	exports['default'] = (0, _publicPubJsx.PubCom)(ZmitiToastApp);
+	module.exports = exports['default'];
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(213);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(190)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!./index.css", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!./index.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(189)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-toast-main-ui {\r\n  background: rgba(0, 0, 0, 0.4);\r\n  position: fixed;\r\n  top: 30%;\r\n  left: 50%;\r\n  -webkit-transform: translate3d(-50%, 0, 0);\r\n  transform: translate3d(-50%, 0, 0);\r\n  padding: 20px 30px;\r\n  color: #fff;\r\n  border-radius: 10px;\r\n  z-index: 99999; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);

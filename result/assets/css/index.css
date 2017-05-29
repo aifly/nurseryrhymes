@@ -15,10 +15,19 @@
   z-index: 10;
   -webkit-transition: 0.4s;
   transition: 0.4s; }
-  .zmiti-result-main-ui.show {
+  .zmiti-result-main-ui.active {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     z-index: 115001; }
+  .zmiti-result-main-ui.hideleft {
+    -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);
+    transform: translate3d(-640px, 0, 0) scale(0.8); }
+  .zmiti-result-main-ui.active {
+    -webkit-transform: scale(1) translate3d(0, 0, 0);
+    transform: scale(1) translate3d(0, 0, 0); }
+  .zmiti-result-main-ui.hideright {
+    -webkit-transform: translate3d(640px, 0, 0) scale(0.8);
+    transform: translate3d(640px, 0, 0) scale(0.8); }
   .zmiti-result-main-ui .zmiti-result-main {
     width: 100%;
     box-sizing: border-box;

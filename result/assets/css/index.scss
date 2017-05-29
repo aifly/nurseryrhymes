@@ -7,11 +7,23 @@ $viewW:640px;
   z-index: 10;
  // @include transform(translate3d($viewW,0,0));
   @include transition(.4s);
- $height:70px;
-  &.show{
+  $height:70px;
+
+  &.active{
     @include transform(translate3d(0,0,0));
     z-index: 115001;
   }
+  
+  &.hideleft{
+     @include transform( translate3d(-$viewW,0,0)  scale(.8));
+   }
+   &.active{
+      @include transform( scale(1) translate3d(0,0,0));
+   }
+
+   &.hideright{
+      @include transform( translate3d($viewW,0,0)  scale(.8));
+   }
 
    .zmiti-result-main{
       width: 100%;

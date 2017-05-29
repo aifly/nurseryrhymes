@@ -4,7 +4,7 @@
 .zmiti-toast-main-ui{
 	background: rgba(0,0,0,.4);
 	@include pos(f);
-	top: 50%;
+	top: 30%;
 	left: 50%;
 	@include transform(translate3d(-50%,0,0));
 	padding: 20px 30px;

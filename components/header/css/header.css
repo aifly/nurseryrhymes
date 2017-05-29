@@ -27,14 +27,17 @@
     .zmiti-header-main-ui .zmiti-index-header > section {
       -webkit-box-flex: 1; }
       .zmiti-header-main-ui .zmiti-index-header > section:last-of-type {
-        text-align: right; }
+        display: -webkit-box;
+        -webkit-box-align: center;
+        -webkit-box-pack: center;
+        -webkit-box-orient: horizontal; }
         .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry {
           border: 1px solid #bbb;
           text-align: center;
           padding: 10px 0;
           width: 150px;
           color: #999;
-          margin: 0 auto;
+          margin-left: 200px;
           border-radius: 30px; }
           .zmiti-header-main-ui .zmiti-index-header > section:last-of-type .zmiti-reload-poetry img {
             width: 30px;

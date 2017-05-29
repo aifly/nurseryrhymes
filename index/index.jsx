@@ -13,7 +13,8 @@ class ZmitiIndexApp extends Component {
 			beginTest:false,
 			imgW:0,
 			transformY:0,
-			isEntry:true
+			isEntry:false,
+			indexClass:'show'
 		};
 		this.viewW = document.documentElement.clientWidth;
 		this.viewH = document.documentElement.clientHeight;
@@ -38,7 +39,7 @@ class ZmitiIndexApp extends Component {
 			intrStyle = 'active';
 		}
 		return (
-			<div className={'zmiti-index-main-ui lt-full '+ (this.state.animate?'active':'')} style={bgStyle}>
+			<div className={'zmiti-index-main-ui lt-full '+ (this.state.animate?'active ':' ') + this.state.indexClass} style={bgStyle}>
 				<section className={'zmiti-index-cover lt-full '+(this.state.isEntry?'hide':'')}>
 					<div className={'zmiti-index-bg '}>
 						<img src='./assets/images/line.png'/>
@@ -89,13 +90,21 @@ class ZmitiIndexApp extends Component {
 	}
 
 	readTY(){
+		let {obserable} = this.props;
 		this.setState({
 			readTY:true
 		});
 		setTimeout(()=>{
 			this.setState({
-				readTY:false
+				readTY:false,
+				indexClass:'hideleft'
 			});
+
+			obserable.trigger({
+				type:'toggleContent',
+				data:'active'
+			});
+
 		},200)
 	}
 
@@ -138,10 +147,16 @@ class ZmitiIndexApp extends Component {
 
 		
 
-		let {IScroll } = this.props;
+		let {IScroll,obserable } = this.props;
 		this.scroll = new IScroll(this.refs['zmiti-index-introduce-scorll'],{
 			scrollbars:true
 		});
+
+		obserable.on('toggleIndex',(data)=>{
+			this.setState({
+				indexClass:data
+			})
+		})
 	}
 }
 export default PubCom(ZmitiIndexApp);

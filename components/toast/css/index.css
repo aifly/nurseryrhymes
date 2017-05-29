@@ -14,7 +14,7 @@
 .zmiti-toast-main-ui {
   background: rgba(0, 0, 0, 0.4);
   position: fixed;
-  top: 50%;
+  top: 30%;
   left: 50%;
   -webkit-transform: translate3d(-50%, 0, 0);
   transform: translate3d(-50%, 0, 0);

@@ -14,7 +14,7 @@ $viewW:640px;
       &>aside{
         -webkit-box-flex:1; 
         img{width:40px;vertical-align: middle;margin-right: 10px; margin-left: 20px;}
-        color:#ccc;
+        color:#00afff;
         font-size: 20px;
         &:last-of-type{
           text-align: right;
@@ -23,10 +23,12 @@ $viewW:640px;
       }
      } 
    }
+   @include transform(scale(.8));
    width: 500px;
+   background: #fff;
    height: 62px;
    line-height: 62px;
-   border:1px solid #91aa9d;
+   border:1px solid #00afff;
    @include br(30px);
    margin: 38px auto 0;
    .zmiti-audio-C{
@@ -37,7 +39,7 @@ $viewW:640px;
     &>aside{
       -webkit-box-flex:1; 
       img{width:70px;vertical-align: middle;margin-right: 10px;}
-      color:#ccc;
+      color:#00afff;
       &:last-of-type{
         text-align: right;
       }

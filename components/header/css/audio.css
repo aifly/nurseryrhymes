@@ -8,24 +8,17 @@
   height: 100%;
   position: absolute;
   left: 0;
-  top: 0; }
-
-.zmiti-text-overflow {
-  overflow: hidden;
-  white-space: nowrap;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  -webkit-text-overflow: ellipsis; }
-
-.zmiti-break-all {
-  word-wrap: break-word;
-  word-break: break-all; }
+  top: 0;
+  overflow: hidden; }
 
 .zmiti-audio-main-ui {
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
   width: 500px;
+  background: #fff;
   height: 62px;
   line-height: 62px;
-  border: 1px solid #91aa9d;
+  border: 1px solid #00afff;
   border-radius: 30px;
   margin: 38px auto 0; }
   .zmiti-audio-main-ui.zmiti-audio-custom {
@@ -43,7 +36,7 @@
       -webkit-box-orient: horizontal; }
       .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside {
         -webkit-box-flex: 1;
-        color: #ccc;
+        color: #00afff;
         font-size: 20px; }
         .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside img {
           width: 40px;
@@ -63,7 +56,7 @@
     -webkit-box-orient: horizontal; }
     .zmiti-audio-main-ui .zmiti-audio-C > aside {
       -webkit-box-flex: 1;
-      color: #ccc; }
+      color: #00afff; }
       .zmiti-audio-main-ui .zmiti-audio-C > aside img {
         width: 70px;
         vertical-align: middle;

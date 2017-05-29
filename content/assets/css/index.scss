@@ -5,8 +5,17 @@ $viewW:640px;
    width: $viewW;
    z-index: 10;
    @include transition(.3s);
-   &.hide{
-   	 @include transform( scale(.8) translate3d(-$viewW,0,0));
+   @include transform( translate3d($viewW,0,0)  scale(.8));
+   &.hideleft{
+   	 @include transform( translate3d(-$viewW,0,0)  scale(.8));
+   }
+
+   &.active{
+      @include transform( scale(1) translate3d(0,0,0));
+   }
+
+   &.hideright{
+      @include transform( translate3d($viewW,0,0)  scale(.8));
    }
 
    .zmiti-content-main{

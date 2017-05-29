@@ -15,10 +15,18 @@
   width: 640px;
   z-index: 10;
   -webkit-transition: 0.3s;
-  transition: 0.3s; }
-  .zmiti-content-main-ui.hide {
-    -webkit-transform: scale(0.8) translate3d(-640px, 0, 0);
-    transform: scale(0.8) translate3d(-640px, 0, 0); }
+  transition: 0.3s;
+  -webkit-transform: translate3d(640px, 0, 0) scale(0.8);
+  transform: translate3d(640px, 0, 0) scale(0.8); }
+  .zmiti-content-main-ui.hideleft {
+    -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);
+    transform: translate3d(-640px, 0, 0) scale(0.8); }
+  .zmiti-content-main-ui.active {
+    -webkit-transform: scale(1) translate3d(0, 0, 0);
+    transform: scale(1) translate3d(0, 0, 0); }
+  .zmiti-content-main-ui.hideright {
+    -webkit-transform: translate3d(640px, 0, 0) scale(0.8);
+    transform: translate3d(640px, 0, 0) scale(0.8); }
   .zmiti-content-main-ui .zmiti-content-main {
     width: 100%;
     box-sizing: border-box;
