@@ -48,10 +48,18 @@ class ZmitiContentApp extends Component {
 					</div>
 					{this.state.isBeginRead && <img className='zmiti-index-voice' src='./assets/images/voice.gif'/>}
 					<div className='zmiti-content-begin-read-btn' onTouchTap={this.beginRecord.bind(this)}>{this.state.isBeginRead?'结束':'开始读'}</div>
-					<div className='zmiti-content-reset'>重新选择</div>
+					<div className='zmiti-content-reset' onTouchTap={this.loadTY.bind(this)}>重新选择</div>
 				</section>
 			</div>
 		);
+	}
+
+	loadTY(){
+		let {obserable} = this.props;
+
+		obserable.trigger({
+			type:'loadTY'
+		});
 	}
 
 	changeURLPar(destiny, par, par_value) { 
@@ -176,6 +184,7 @@ class ZmitiContentApp extends Component {
 
 	beginRecord(){
 		///开始录音
+		this.startTime =this.startTime || new Date().getTime();
 		let {obserable} = this.props;
 		var s = this;
 		if(!this.state.isBeginRead){
@@ -194,6 +203,9 @@ class ZmitiContentApp extends Component {
 		let {obserable} = this.props;
 		
 		var s = this;//结束朗读
+
+		var duration = (new Date().getTime()-s.startTime)/1000|0;
+
 		wx.stopRecord({
 			fail(){
 				alert('end error');
@@ -207,6 +219,11 @@ class ZmitiContentApp extends Component {
 					data:s.localId
 				});
 				//开始转文字。
+				//
+				obserable.trigger({
+					type:'updateDuration',
+					data:duration
+				})
 				wx.translateVoice({
 				    localId: s.localId, // 需要识别的音频的本地Id，由录音相关接口获得
 				    isShowProgressTips: 1, // 默认为1，显示进度提示
@@ -255,7 +272,7 @@ class ZmitiContentApp extends Component {
 							contentClass:'hideleft'
 						});
 
-						obserable.trigger({type:'updateScore',data:score});
+						var age = obserable.trigger({type:'updateScore',data:score});
 						wx.uploadVoice({
 						    localId:s.localId, // 需要上传的音频的本地ID，由stopRecord接口获得
 						    isShowProgressTips: 0, // 默认为1，显示进度提示
@@ -264,7 +281,6 @@ class ZmitiContentApp extends Component {
 						    },
 					        success: function (res) {
 						        var serverId = res.serverId; // 返回音频的服务器端ID
-						       
 								$.ajax({
 									url:'http://api.zmiti.com/v2/weixin/post_shiciresult/',
 									type:'post',
@@ -274,7 +290,7 @@ class ZmitiContentApp extends Component {
 										wxopenid:s.props.openid,
 										parentwxopenid:s.props.parentWxopenId,
 										mediaid:serverId,
-										score:score,
+										score:age,
 										duration:s.props.duration,
 										changetext:s.props.transformResult.replace(/<[^>]+>/g,""),
 										usercity:s.props.usercity,
@@ -303,13 +319,14 @@ class ZmitiContentApp extends Component {
 											obserable.trigger({
 												type:'showToast',
 												data:'提交成功'
-											})
+											});
+
 
 											s.setState({
 												id
 											},()=>{
 												setTimeout(()=>{
-									   				s.wxConfig(s.props.nickname+'为你朗读了一首诗','千山万水总是情，为你读诗行不行。远方的朋友用家乡话为你读了首诗，你能猜出原诗吗？',s.props.data.shareImg,s.props.wxappid);
+									   				s.wxConfig(s.props.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
 									   			},500)
 											});
 
@@ -346,6 +363,11 @@ class ZmitiContentApp extends Component {
 										   		}
 											})
 											
+										}else {
+											obserable.trigger({
+												type:'showToast',
+												data:'提交失败'
+											});
 										}
 										
 									}

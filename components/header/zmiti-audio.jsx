@@ -15,7 +15,7 @@ class ZmitiAudioApp extends Component {
 		return (
 			<div className={'zmiti-audio-main-ui '+ (this.props.className||'')}>
 				<section className='zmiti-audio-C' onTouchTap={this.playAudio.bind(this)}>
-					<aside><img src={'./assets/images/pause.'+(this.state.pause?'png':'gif')+''}/>点我收听</aside>
+					<aside><img src={'./assets/images/pause.'+(this.state.pause?'png':'gif')+''}/>{this.props.text||'点我收听'}</aside>
 					<aside>{this.props.duration|| 0}'</aside>
 				</section>
 			</div>
@@ -30,6 +30,7 @@ class ZmitiAudioApp extends Component {
 				wx.playVoice({
 				    localId: s.props.audioSrc
 				});	
+
 				wx.onVoicePlayEnd({
 				    success: function (res) {
 				        var localId = res.localId; // 返回音频的本地ID

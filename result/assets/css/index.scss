@@ -4,6 +4,11 @@ $viewW:640px;
 
 .zmiti-result-main-ui{
 
+  .zmiti-mask{
+    z-index: 1000;
+    
+  }
+
   z-index: 10;
  // @include transform(translate3d($viewW,0,0));
   @include transition(.4s);

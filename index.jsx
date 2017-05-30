@@ -9,6 +9,7 @@ import './assets/css/index.css';
 import ZmitiLoadingApp from './loading/index.jsx';
 import ZmitiIndexApp from './index/index.jsx';
 import ZmitiContentApp from './content/index.jsx';
+import ZmitiShareOpenApp from './shareopen/index.jsx';
 import ZmitiResultApp from './result/index.jsx';
 import ZmitiToastApp from './components/toast/index.jsx';
 import Obserable from './components/public/obserable';
@@ -29,7 +30,7 @@ export class App extends Component {
 			worksid:'',	
 			age:18,
 			nickname:'文明网',
-			headimgurl:'',
+			headimgurl:'./assets/images/zmiti.jpg',
 			duration:0,//录音时长。
 			transformResult:'',
 			latitude:'',
@@ -44,6 +45,8 @@ export class App extends Component {
 			userPoetryTitle:'',
 			userPoetryAuthor:'',
 			userPoetryContent:'',//原诗
+
+			isShare:false
 			
 		}
 		this.viewW = document.documentElement.clientWidth;
@@ -73,6 +76,7 @@ export class App extends Component {
 				{!this.state.showLoading && <ZmitiIndexApp {...data} {...this.state}></ZmitiIndexApp>}
 				{!this.state.showLoading && <ZmitiContentApp {...this.state} {...data}></ZmitiContentApp>}
 				{!this.state.showLoading && <ZmitiResultApp {...this.state} {...data}></ZmitiResultApp>}
+				{!this.state.showLoading && this.state.isShare && <ZmitiShareOpenApp {...this.state} {...data}></ZmitiShareOpenApp>}
 
 				{this.state.showPoetryLoading&&<div className='zmiti-get-poetry-loading'>
 										<div>
@@ -243,12 +247,33 @@ export class App extends Component {
 	        })
     }
 
+    changeURLPar(destiny, par, par_value) { 
+		var pattern = par+'=([^&]*)'; 
+		var replaceText = par+'='+par_value; 
+		if (destiny.match(pattern)) { 
+			var tmp = '/\\'+par+'=[^&]*/'; 
+			tmp = destiny.replace(eval(tmp), replaceText); 
+			return (tmp); 
+		} 
+		else { 
+			if (destiny.match('[\?]')) { 
+				return destiny+'&'+ replaceText; 
+			} 
+			else { 
+				return destiny+'?'+replaceText; 
+			} 
+		} 
+		return destiny+'\n'+par+'\n'+par_value; 
+	}
+
+
 	wxConfig(title,desc,img,appId='wxfacf4a639d9e3bcc',worksid){
 		   var durl = location.href.split('#')[0]; //window.location;
-		        var code_durl = encodeURIComponent(durl);
 
 		        var s = this;
-
+	        	//durl = s.changeURLPar(durl,'id',s.state.id);
+	   			//durl = s.changeURLPar(durl,'wxopenid',s.state.parentWxopenId);
+		        var code_durl = encodeURIComponent(durl);
 			$.ajax({
 				type:'get',
 				url: "http://api.zmiti.com/weixin/jssdk.php?type=signature&durl="+code_durl+"&worksid="+worksid,
@@ -366,6 +391,17 @@ export class App extends Component {
 	componentDidMount() {
 		var s = this;
 		
+		obserable.on('updateDuration',(data)=>{
+			this.setState({
+				duration:data
+			})
+		})
+
+		obserable.on('toggleLoading',(data)=>{
+			this.setState({
+				showPoetryLoading:data
+			})
+		})
 		obserable.on('loadTY',()=>{
 
 			s.state.showPoetryLoading = true;
@@ -410,6 +446,20 @@ export class App extends Component {
 			})
 		});
 
+
+		var id = this.getQueryString('id'),
+			parentWxopenId = this.getQueryString('wxopenid');
+
+		this.setState({
+			id,
+			parentWxopenId,
+			isShare:id && parentWxopenId
+		},()=>{
+			if(this.state.isShare){
+				
+			}
+		});
+
 		obserable.on('getTransformResult', (data)=> {
 			this.setState({
 				transformResult: data
@@ -429,8 +479,22 @@ export class App extends Component {
 				},2000)	
 			}
 			
+		});
+
+		obserable.on('removeParentInfo',()=>{
+
+			this.setState({
+				id:'',
+				parentWxopenId:'',
+				isShare:false
+			});
+			obserable.trigger({
+				type:'toggleContent',
+				data:'active'
+			});
+			this.wxConfig('一起来嫩声读童谣'.replace(/{username}/ig,s.state.nickname),'一起来嫩声读童谣'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid,s.worksid);
 		})
-		
+
 		obserable.trigger({
 			type:'loadTY'
 		});
@@ -479,7 +543,7 @@ export class App extends Component {
 
 							s.nickname = dt.userinfo.nickname;
 							s.headimgurl = dt.userinfo.headimgurl;
-							s.wxConfig('童谣'.replace(/{username}/ig,s.state.nickname),'不'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid,s.worksid);
+							s.wxConfig('一起来嫩声读童谣'.replace(/{username}/ig,s.state.nickname),'一起来嫩声读童谣'.replace(/{username}/ig,s.state.nickname),s.state.shareImg,s.state.wxappid,s.worksid);
 							
 
 							if (wx.posData && wx.posData.longitude) {
@@ -511,17 +575,12 @@ export class App extends Component {
 								return;
 							}*/
 
-							var redirect_uri = window.location.href.split('?')[0];
+							var redirect_uri =  window.location.href.split('?')[0];
 							var symbol = redirect_uri.indexOf('?') > -1 ? '&' : '?';
-							if (s.state.id && s.state.parentWxopenId) {
-								redirect_uri = redirect_uri + symbol + 'id=' + s.state.id + '&wxopenid=' + s.state.parentWxopenId;
+							if (id && parentWxopenId) {
+								redirect_uri = s.changeURLPar(redirect_uri,'id',id);
+								redirect_uri = s.changeURLPar(redirect_uri,'wxopenid',parentWxopenId);
 							}
-							
-							symbol = redirect_uri.indexOf('?') > -1 ? '&' : '?';
-							if (!s.getQueryString('zmiti')) {
-								//redirect_uri += symbol + 'zmiti=start';
-							}
-							
 							$.ajax({
 								url:'http://api.zmiti.com/v2/weixin/getoauthurl/',
 								type:'post',

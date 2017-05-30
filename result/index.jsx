@@ -36,13 +36,32 @@ class ZmitiResultApp extends Component {
 							<ZmitiAudioApp {...this.props}></ZmitiAudioApp>
 						</div>
 					</div>
-					<div className='zmiti-result-begin-read-btn'>让朋友猜我的年龄</div>
-					<div className='zmiti-result-reset'>重复读一遍</div>
+					<div className='zmiti-result-begin-read-btn' onTouchTap={this.share.bind(this)}>让朋友猜我的年龄</div>
+					<div className='zmiti-result-reset' onTouchTap={this.readAgin.bind(this)}>重复读一遍</div>
+
 				</section>
+				{this.state.showMask && <div onTouchStart={()=>{this.setState({showMask:false})}} className='zmiti-mask lt-full' style={{background:'url(./assets/images/arron1.png) no-repeat center top / cover'}}></div>}
 			</div>
 		);
 	}
 
+	share(){
+		this.setState({
+			showMask:true
+		})
+	}
+
+	readAgin(){
+		let {obserable} = this.props;
+		obserable.trigger({
+			type:'toggleResult',
+			data:'hideright'
+		});
+		obserable.trigger({
+			type:'toggleContent',
+			data:'active'
+		});
+	}
 
 	backToShare(){
 		let {obserable} = this.props;
@@ -78,22 +97,27 @@ class ZmitiResultApp extends Component {
 		})
 
 		obserable.on('updateScore',(data)=>{
+			
+			var age = 40;
+				age = Math.random()*data|0;
+				age >= 30 && (age = Math.random()*30|0);
+				age<=5 && (age = Math.random()*10|0+5);
+
 			this.setState({
 				score: data
 			},()=>{
 				
-				var age = 40;
-				age = Math.random()*data|0;
-				age >= 30 && (age = Math.random()*30|0);
-				age<=5 && (age = Math.random()*10|0+5);
+				
 				this.setState({
 					age
-				})
+				});
 			});
 			obserable.trigger({
 				type:'getScale',
 				data:data+(Math.random()*4|0+1)
-			})
+			});
+
+			return age;
 			
 		});
 
