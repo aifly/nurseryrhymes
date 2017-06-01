@@ -109,6 +109,8 @@ class ZmitiIndexApp extends Component {
 	}
 
 	guessTY(){
+
+
 		this.setState({
 			guessTY:true
 		});
@@ -116,8 +118,147 @@ class ZmitiIndexApp extends Component {
 			this.setState({
 				guessTY:false
 			});
-		},200)
+		},200);
+
+
+		let {obserable} = this.props;
+		obserable.trigger({
+			type:'showShareOpen'
+		});
+
+		setTimeout(()=>{
+			obserable.trigger({
+				type:'loadShareData',
+				data:{}
+			});
+		},500)
+		
+		return;
+
+
+		var s = this;
+		var params = {};
+		
+		obserable.trigger({
+			type:'toggleLoading',
+			data:true
+		})
+	
+		params = {
+			worksid:s.props.worksid,
+			type:2
+		}
+
+		$.ajax({
+			url:'http://api.zmiti.com/v2/weixin/get_shicioriginaltext',
+			data:params,
+			error(){
+				
+				obserable.trigger({
+					type:'toggleLoading',
+					data:false
+				})
+				window.debug && alert('get_shicioriginaltext error')
+			},
+			success(data){
+
+				if(data.getret === 0){
+					if(data.list.length>0){
+						s.state.headimgurl = data.list[0].headimgurl;
+						s.state.nickname = data.list[0].nickname;
+						s.state.userPoetryContent = data.list[0].changetext;
+						s.state.poetryContent = data.list[0].originaltext;
+						s.state.poetryTitle = data.list[0].workdatatitle;
+						s.state.poetryAuthor = data.list[0].author;
+						s.state.avgAge = data.list[0].avgvalue;
+						s.state.duration = data.list[0].duration;
+						s.state.workdataid = data.list[0].workdataid;
+						s.state.serverId = data.list[0].voicemedia_id;
+					
+						s.state.id = data.list[0].subproductid;
+						s.state.parentWxopenId = data.list[0].subproductid;
+
+						///s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
+						
+						wx.downloadVoice({
+							isShowProgressTips:0, // 默认为1，显示进度提示
+							serverId:data.list[0].voicemedia_id,
+							fail(){
+								window.debug && alert('录音过期。');
+							},
+							success(res){
+								obserable.trigger({
+									type:"getLocalId",
+									data:res.localId
+								});
+							}
+						});
+
+						obserable.trigger({
+							type:'toggleLoading',
+							data:false
+						})
+
+						obserable.trigger({
+							type:'showShareOpen'
+						});
+
+
+						setTimeout(()=>{
+							obserable.trigger({
+								type:'fillShare',
+								data:data
+							})
+						},1500);
+
+						obserable.trigger({
+							type:'toggleIndex',
+							data:'show'
+						});
+
+						setTimeout(()=>{
+					    	s.state.showPoetryLoading = false;
+							s.forceUpdate();
+						},500);
+						setTimeout(()=>{
+							var url = window.location.href.split('?')[0];
+							url = s.changeURLPar('id',s.state.id);
+							url = s.changeURLPar('wxopenid',s.state.parentWxopenId);
+							s.props.wxConfig(s.props.nickname+'儿童节重返'+s.state.avgAge+'岁',window.shareInfo.desc,s.props.shareImg,s.props.wxappid,url);
+						},2000)
+					}
+					else{
+						window.debug && alert('没有获取到诗词，请刷新重试');
+					}
+				}else{
+					obserable.trigger({
+						type:'toggleLoading',
+						data:false
+					})
+					window.degub && alert('getret => ' + data.getret + ' getmsg => '+data.getmsg);
+				}
+			}
+		})
 	}
+
+	changeURLPar(destiny, par, par_value) { 
+		var pattern = par+'=([^&]*)'; 
+		var replaceText = par+'='+par_value; 
+		if (destiny.match(pattern)) { 
+			var tmp = '/\\'+par+'=[^&]*/'; 
+			tmp = destiny.replace(eval(tmp), replaceText); 
+			return (tmp); 
+		} 
+		else { 
+			if (destiny.match('[\?]')) { 
+				return destiny+'&'+ replaceText; 
+			} 
+			else { 
+				return destiny+'?'+replaceText; 
+			} 
+		} 
+		return destiny+'\n'+par+'\n'+par_value; 
+	} 
 
 	entryIntr(){
 		this.setState({
@@ -147,10 +288,7 @@ class ZmitiIndexApp extends Component {
 
 		
 
-		let {IScroll,obserable } = this.props;
-		this.scroll = new IScroll(this.refs['zmiti-index-introduce-scorll'],{
-			scrollbars:true
-		});
+		let {obserable } = this.props;
 
 		obserable.on('toggleIndex',(data)=>{
 			this.setState({

@@ -6,6 +6,7 @@
 	on(type,handler){
 		this.handlers[type] =  this.handlers[type] || [];
 		this.handlers[type].push(handler);	
+		
 	}
 	trigger(event){
 

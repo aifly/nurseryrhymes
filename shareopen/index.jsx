@@ -20,6 +20,7 @@ class ZmitiShareOpenApp extends Component {
 			headimgurl:'./assets/images/zmiti.jpg',
 			nickname:'',
 			age:'',
+			duration:'',
 			avgAge:0,
 			shareOpenClass:'active'
 		};
@@ -33,35 +34,48 @@ class ZmitiShareOpenApp extends Component {
 			//console.log(this.state.imgW /2 - this.viewH)
 
 		var bgStyle = {
-			
-			background:'url(./assets/images/bg1.jpg) no-repeat center / cover'	
-
+			background:'url(./assets/images/bg1.jpg) no-repeat center / cover',
+			display:this.props.isShare?'block':'none'
 		}
-	
+
 		return (
 			<div onTouchStart={this.mainTap.bind(this)} className={'zmiti-shareopen-main-ui lt-full ' + this.state.shareOpenClass} style={bgStyle}>
-				<ZmitiHeaderApp {...this.props}></ZmitiHeaderApp>
-				<div className='zmiti-shareopen-main'>
-					<div><img src={this.state.headimgurl}/>{this.state.nickname}在<span>听音识岁--嫩声读童谣</span></div>
-					<div>活动中评为 <span>{this.state.avgAge}</span> 岁<img src='./assets/images/bufu.png'/></div>
-					<div className=''>请您来判断岁数</div>
-					<img className='zmiti-shareopen-img' src='./assets/images/share-person.png'/>
+				<div className={'zmiti-shareopen-main-C '+(this.state.showKeyboard ? 'top':'')}>
+					<ZmitiHeaderApp {...this.props}></ZmitiHeaderApp>
+					<div className='zmiti-shareopen-main'>
+						<div><img src={this.state.headimgurl}/><label>{this.state.nickname}</label>在<span>听音识岁--嫩声读童谣</span></div>
+						<div>活动中评为 <span>{this.state.avgAge}</span> 岁<img src='./assets/images/bufu.png'/></div>
+						<div className=''>-请您来判断岁数-</div>
+						<img className='zmiti-shareopen-img' src='./assets/images/share-person.png'/>
 
-					<section>
-						<ZmitiAudioApp text='听听他(她)的声音' className='zmiti-share-audio' {...this.props}></ZmitiAudioApp>
+						<section>
+							<ZmitiAudioApp text='听听他(她)的声音' className='zmiti-share-audio' {...this.props} duration={this.state.duration}></ZmitiAudioApp>
+						</section>
+					</div>
+					<section className='zmiti-share-input-C'>
+						<div onTouchStart={this.showKeyboard.bind(this)} className='zmiti-share-input'>{this.state.age || '请填写年龄'}</div>
+						<div className='zmiti-share-submit' onTouchTap={this.submit.bind(this)}>发布</div>
 					</section>
-				</div>
-				<section className='zmiti-share-input-C'>
-					<div onTouchStart={()=>{this.setState({showKeyboard:true})}} className='zmiti-share-input'>{this.state.age || '请填写年龄'}</div>
-					<div className='zmiti-share-submit' onTouchTap={this.submit.bind(this)}>提交</div>
-				</section>
-				<div className='zmiti-share-btns'>
-					<aside>
-						<section onTouchTap={this.readTY.bind(this)} >我也读童谣</section>
-					</aside>
-					<aside>
-						<section onTouchTap={this.guessOthers.bind(this)}>再帮别人来认岁</section>
-					</aside>
+
+					
+					{this.state.showBtns &&  <section className='zmiti-share-dialog-C lt-full' onTouchTap={this.backIndex.bind(this)}>
+											<section className='zmiti-share-dialog'>
+												<section className='zmiti-share-text'>
+													<div>
+														您已成功帮助<span>{this.state.nickname||'智媒体'}</span><br/>
+														把年龄修改到<span>{( this.state.avgAge + this.state.age * 1 ) / 2 | 0}</span> 岁
+													</div>
+													<div className='zmiti-share-btns'>
+														<aside>
+															<section onTouchTap={this.readTY.bind(this)} >我也读童谣</section>
+														</aside>
+														<aside>
+															<section onTouchTap={this.guessOthers.bind(this)}>识别其他人年龄</section>
+														</aside>
+													</div>
+												</section>
+											</section>
+										</section>}
 				</div>
 				<ZmitiKeyboardApp show={this.state.showKeyboard} obserable={this.props.obserable}></ZmitiKeyboardApp>
 			</div>
@@ -77,96 +91,129 @@ class ZmitiShareOpenApp extends Component {
 		});
 	}
 
+	backIndex(e){
+		if($(e.target).hasClass('zmiti-share-dialog') || $(e.target).parents('.zmiti-share-dialog').length>0 ){
+			return;
+		}
+		let {obserable } = this.props;
+		obserable.trigger({
+			type:'backIndex'
+		});
+		this.setState({
+			showBtns:false,
+			age:''
+		})
+		
+	}
+
+	showKeyboard(){
+		this.setState({
+			showKeyboard:true
+		});
+		
+	}
+
 	readTY(){
 		let {obserable} = this.props;
-
 		obserable.trigger({
 			type:'removeParentInfo'
 		});
+		setTimeout(()=>{
+			this.setState({
+				showBtns:false
+			})
+		},200)
 	}
 
 	guessOthers(){
 		var s = this;
 		var params = {};
+		this.setState({
+			age:'',
+			showBtns:false
+		});
+
 		let {obserable} = this.props;
 		obserable.trigger({
 			type:'toggleLoading',
 			data:true
 		})
-		var id = this.getQueryString('id'),
-			parentWxopenId = this.getQueryString('wxopenid');
-			
-			params = {
-				id:id,
-				///wxopenid:parentWxopenId,
-				//workdataid:s.props.workdataid
-			}
+		
+		params = {
+			type:2,
+			worksid:s.props.worksid
+		}
 
-			$.ajax({
-				url:'http://api.zmiti.com/v2/weixin/get_shicioriginaltext',
-				data:params,
-				error(){
-					
-					obserable.trigger({
-						type:'toggleLoading',
-						data:false
-					})
-					window.debug && alert('get_shicioriginaltext error')
-				},
-				success(data){
-					if(data.getret === 0){
-						if(data.list.length>0){
-							s.state.headimgurl = data.list[0].headimgurl;
-							s.state.nickname = data.list[0].nickname;
-							s.state.userPoetryContent = data.list[0].changetext;
-							s.state.poetryContent = data.list[0].originaltext;
-							s.state.poetryTitle = data.list[0].workdatatitle;
-							s.state.poetryAuthor = data.list[0].author;
-							s.state.avgAge = data.list[0].avgvalue;
-							s.state.duration = data.list[0].duration;
-							s.state.workdataid = data.list[0].workdataid;
-							s.state.serverId = data.list[0].voicemedia_id;
+		$.ajax({
+			url:'http://api.zmiti.com/v2/weixin/get_shicioriginaltext',
+			data:params,
+			error(){
+				
+				obserable.trigger({
+					type:'toggleLoading',
+					data:false
+				})
+				window.debug && alert('get_shicioriginaltext error')
+			},
+			success(data){
+				if(data.getret === 0){
+					if(data.list.length>0){
+						s.fillShare(data)
 
+						obserable.trigger({
+							type:'toggleLoading',
+							data:false
+						})
 
-							///s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
-							
-							wx.downloadVoice({
-								isShowProgressTips:0, // 默认为1，显示进度提示
-								serverId:data.list[0].voicemedia_id,
-								fail(){
-									window.debug && alert('录音过期。');
-								},
-								success(res){
-
-									
-									obserable.trigger({
-										type:"getLocalId",
-										data:res.localId
-									});
-								}
-							});
-
-							obserable.trigger({
-								type:'toggleLoading',
-								data:false
-							})
-
-							setTimeout(()=>{
-						    	s.state.showPoetryLoading = false;
-								s.forceUpdate();
-							},500);
-							setTimeout(()=>{
-								s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
-							},2000)
-						}
-						else{
-							window.debug && alert('没有获取到诗词，请刷新重试');
-						}
-					}else{
-						window.debug && alert( data.getmsg )
+						setTimeout(()=>{
+					    	s.state.showPoetryLoading = false;
+							s.forceUpdate();
+						},500);
+						setTimeout(()=>{
+							s.wxConfig(s.state.nickname+'儿童节重返'+s.state.avgAge+'岁',window.shareInfo.desc,s.props.shareImg,s.props.wxappid);
+						},2000)
 					}
+					else{
+						window.debug && alert('没有获取到诗词，请刷新重试');
+					}
+				}else{
+					window.debug && alert( data.getmsg )
 				}
-			})
+			}
+		})
+	}
+
+	fillShare(data){
+		var s = this;
+		let {obserable} = this.props;
+		s.state.headimgurl = data.list[0].headimgurl;
+		s.state.nickname = data.list[0].nickname;
+		s.state.userPoetryContent = data.list[0].changetext;
+		s.state.poetryContent = data.list[0].originaltext;
+		s.state.poetryTitle = data.list[0].workdatatitle;
+		s.state.poetryAuthor = data.list[0].author;
+		s.state.avgAge = data.list[0].avgvalue;
+		s.state.duration = data.list[0].duration;
+		s.state.workdataid = data.list[0].workdataid;
+		s.state.serverId = data.list[0].voicemedia_id;
+		s.state.subproductid = data.list[0].subproductid;
+		s.forceUpdate();
+		///s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
+		
+		wx.downloadVoice({
+			isShowProgressTips:0, // 默认为1，显示进度提示
+			serverId:data.list[0].voicemedia_id,
+			fail(){
+				window.debug && alert('录音过期。');
+			},
+			success(res){
+
+				obserable.trigger({
+					type:"getLocalId",
+					data:res.localId
+				});
+			}
+		});
 	}
 
 	submit(){
@@ -179,10 +226,9 @@ class ZmitiShareOpenApp extends Component {
 			});
 			return;
 		}
-		var id = this.getQueryString('id'),
-			parentWxopenId = this.getQueryString('wxopenid');
+		var id = this.getQueryString('id') ||  s.state.subproductid,
+			parentWxopenId = this.getQueryString('wxopenid') ||  s.state.subproductid;
 		var serverId = s.state.serverId;
-
 		$.ajax({
 			url:'http://api.zmiti.com/v2/weixin/post_shiciresult/',
 			type:'post',
@@ -199,7 +245,7 @@ class ZmitiShareOpenApp extends Component {
 				usercity:s.props.usercity,
 				longitude:s.props.longitude,
 				latitude:s.props.latitude,
-				wxname:s.state.nickname,
+				wxname:s.props.nickname,
 				workdatatitle:s.props.poetryTitle
 			},
 			error(){
@@ -208,23 +254,17 @@ class ZmitiShareOpenApp extends Component {
 			success(data){
 
 				if( data.getret === 0){
-					obserable.trigger({
-						type:'showToast',
-						data:'提交成功'
-					})
-					var id = data.id;
 					/*obserable.trigger({
-						type:'updateParentInfo',
-						data:{
-							id,
-							parentWxopenId:s.props.openid
-						}
-					});*/
+						type:'showToast',
+						data:'您提交了对'+s.state.nickname+'的年龄判断，现已成功将TA的年龄变成了'+(( s.state.avgAge + s.state.age * 1 ) / 2 | 0)+'岁'
+					})
+*/
 
-
-
-					s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
-
+					var id = data.id;
+					s.wxConfig(s.state.nickname+'儿童节重返'+(( s.state.avgAge + s.state.age*1 ) / 2 | 0) +'岁',window.shareInfo.de,s.props.shareImg,s.props.wxappid);
+					s.setState({
+						showBtns:true
+					});
 					var integral = 10;
 					$.ajax({
 						url:'http://api.zmiti.com/v2/weixin/add_wxuser/',
@@ -251,19 +291,19 @@ class ZmitiShareOpenApp extends Component {
 					   				type:'updateIntegral',
 					   				data:integral
 					   			});
-
-					   			
 				   			} 
-				   			
 				   		}
 					})
-					
 				}
 				else{
-					obserable.trigger({
+					//alert('getret => '+ data.getret + ' msg => '+ data.getmsg)
+					/*obserable.trigger({
 						type:'showToast',
 						data:'提交失败'
-					})
+					})*/
+					s.setState({
+						showBtns:true
+					});
 				}
 				
 			}
@@ -293,6 +333,7 @@ class ZmitiShareOpenApp extends Component {
  	
  	wxConfig(title,desc,img,appId='wxfacf4a639d9e3bcc',worksid=this.props.worksid){
 			var s = this;
+		   
 
 		   var durl = location.href.split('#')[0];//+symbol+'id='+this.state.id+'&wxopenid='+ this.props.openid; //window.location;
 		   	durl = s.changeURLPar(durl,'id',s.id);
@@ -410,11 +451,18 @@ class ZmitiShareOpenApp extends Component {
 					this.state.showKeyboard = false;
 				}
 			}else{
+				if(data*1 === 0 && this.state.age.length < 1){
+					return;
+				}
 				this.state.age += data;
+				if(this.state.age.charAt(0)==='0'){
+					this.state.age = this.state.age.substring(1);
+				}
 			}
 
-			this.state.age = this.state.age.substring(0,2);	
-			console.log(this.state.age);
+			if(this.state.age*1>99){
+				this.state.age = this.state.age.substring(this.state.age.length-2,this.state.age.length);	
+			}
 
 			
 			this.forceUpdate()
@@ -422,18 +470,37 @@ class ZmitiShareOpenApp extends Component {
 
 
 		var s = this;
-		var params = {};
-		var id = this.getQueryString('id'),
-			parentWxopenId = this.getQueryString('wxopenid');
+
+		obserable.on('fillShare',(data)=>{
+			this.fillShare(data);
+		})
+
+		obserable.on('toggleOpenShare',(data)=>{
+			this.setState({
+				shareOpenClass:data
+			})
+		})
+
+		obserable.on('loadShareData',(data)=>{
+
+			var params = {};
+			var data = data || {};
+		    var id = data.id,
+				parentWxopenId = data.parentWxopenId;
+			
+
 			this.id = id;
 			this.parentWxopenId = parentWxopenId;
 			if(!this.state.isOther && id && parentWxopenId){
 				params = {
 					id:id,
 					wxopenid:parentWxopenId,
-					workdataid:s.props.workdataid
 				}
 			}
+
+			params.worksid = s.props.worksid;
+			params.type = 2;
+
 
 			$.ajax({
 				url:'http://api.zmiti.com/v2/weixin/get_shicioriginaltext',
@@ -445,8 +512,10 @@ class ZmitiShareOpenApp extends Component {
 					window.debug && alert('get_shicioriginaltext error')
 				},
 				success(data){
+
 					if(data.getret === 0){
 						if(data.list.length>0){
+
 							s.state.headimgurl = data.list[0].headimgurl;
 							s.state.nickname = data.list[0].nickname;
 							s.state.userPoetryContent = data.list[0].changetext;
@@ -457,6 +526,11 @@ class ZmitiShareOpenApp extends Component {
 							s.state.duration = data.list[0].duration;
 							s.state.workdataid = data.list[0].workdataid;
 							s.state.serverId = data.list[0].voicemedia_id;
+							s.state.subproductid = data.list[0].subproductid;
+							
+							s.state.showPoetryLoading = false;
+							s.forceUpdate();
+							//alert(s.state.nickname+' \n s.state.subproductid => '+s.state.subproductid+'\nserverid=>'+s.state.serverId);
 
 
 							///s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
@@ -465,24 +539,20 @@ class ZmitiShareOpenApp extends Component {
 								isShowProgressTips:0, // 默认为1，显示进度提示
 								serverId:data.list[0].voicemedia_id,
 								fail(){
-									window.debug && alert('录音过期。');
+									
 								},
 								success(res){
-
-									
+									//alert('res.localId => '+res.localId)
 									obserable.trigger({
 										type:"getLocalId",
 										data:res.localId
 									});
 								}
 							})
-
+							
 							setTimeout(()=>{
-						    	s.state.showPoetryLoading = false;
-								s.forceUpdate();
-							},500);
-							setTimeout(()=>{
-								s.wxConfig(s.state.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
+								
+								s.wxConfig(s.state.nickname+'儿童节重返'+s.state.avgAge+'岁',window.shareInfo.desc,s.props.shareImg,s.props.wxappid);
 							},2000)
 						}
 						else{
@@ -493,6 +563,7 @@ class ZmitiShareOpenApp extends Component {
 					}
 				}
 			})
+		})
 	}
 }
 export default PubCom(ZmitiShareOpenApp);

@@ -23,7 +23,7 @@
       margin: -90px 0 0 -90px;
 
       .zmiti-head{
-        $size:60px;
+        $size:100px;
         width:$size;
         height: $size;
         @include br(50%);
@@ -37,13 +37,15 @@
         width:100%;
         @include pos(r);
         z-index: 10;
-        top:90px;
+        top:120px;
+        font-size: 40px;
+        font-family: Georgia;
 
       }
   }
-    a .line1{width: 80px;height: 80px;position: absolute;left: 50%;top: 50%;margin: -42px 0 0 -42px;border:2px solid #fff;border-radius: 80px 80px 80px 80px;border-right-color: transparent;border-top-color: transparent;}
-    a .line2{width: 100px;height: 100px;position: absolute;left: 50%;top: 50%;margin: -52px 0 0 -52px;border:2px solid #fff;border-radius: 100px 100px 100px 100px;border-right-color: transparent;border-left-color: transparent;}
-    a .line3{width: 120px;height: 120px;position: absolute;left: 50%;top: 50%;margin: -62px 0 0 -62px;border:2px solid #fff;border-radius: 120px 120px 120px 120px;border-right-color: transparent;}
+    a .line1{width: 100px;height: 100px;position: absolute;left: 50%;top: 50%;margin: -52px 0 0 -52px;border:2px solid #fff;border-radius: 80px 80px 80px 80px;border-right-color: transparent;border-top-color: transparent;}
+    a .line2{width: 120px;height: 120px;position: absolute;left: 50%;top: 50%;margin: -62px 0 0 -62px;border:2px solid #fff;border-radius: 100px 100px 100px 100px;border-right-color: transparent;border-left-color: transparent;}
+    a .line3{width: 140px;height: 140px;position: absolute;left: 50%;top: 50%;margin: -72px 0 0 -72px;border:2px solid #fff;border-radius: 120px 120px 120px 120px;border-right-color: transparent;}
     @-webkit-keyframes line1 {
         0%{
             -webkit-transform: rotate(0deg);

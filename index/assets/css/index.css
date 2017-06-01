@@ -166,8 +166,8 @@
       .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white {
         width: 460px;
         left: 90px;
-        height: 520px;
-        top: 100px;
+        height: 540px;
+        top: 90px;
         background: #fff;
         overflow: hidden; }
         .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll {
@@ -178,7 +178,7 @@
             margin: 20px auto; }
           .zmiti-index-main-ui .zmiti-index-introduce .zmiti-index-introduce-main .zmiti-index-introduce-white .zmiti-index-introduce-scorll > section {
             width: 90%;
-            margin: 20px auto;
+            margin: 0 auto;
             text-indent: 2em;
             line-height: 40px; }
 

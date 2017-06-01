@@ -51,9 +51,9 @@ export default class ZmitiUserCenterApp extends React.Component {
 			</aside>
 		</section>
 		<section className='zmiti-user-list-nav'>
-			<div><a href='javascript:void(0)' onTouchTap={this.entryCourse.bind(this)}>诗(词、文)的历程</a></div>
+			<div><a href='javascript:void(0)' onTouchTap={this.entryCourse.bind(this)}>童谣的历程</a></div>
 			<div><a href='javascript:void(0)' onTouchTap={this.entryGrade.bind(this)}>个人评分排行榜</a></div>
-			<div><a href='javascript:void(0)' onTouchTap={this.entryRanking.bind(this)}>诗(词、文)排行榜</a></div>
+			<div><a href='javascript:void(0)' onTouchTap={this.entryRanking.bind(this)}>童谣排行榜</a></div>
 		</section>
       </div>
     );

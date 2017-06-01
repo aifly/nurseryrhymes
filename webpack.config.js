@@ -1,7 +1,8 @@
 var webpack = require('webpack');
  var config = {
      entry: {
-         'index': "./index.jsx"
+         'index': "./index.jsx",
+         'ranking': "./ranking.jsx"
      },
      output: {
          //publicPath: './static/js',

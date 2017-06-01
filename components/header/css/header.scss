@@ -12,18 +12,22 @@ $viewW:640px;
        padding-top: 9px;
        @include displayBox(horizontal);
        &>section{
-          -webkit-box-flex:1;
           &:last-of-type{
+             -webkit-box-flex:1;
              @include displayBox(horizontal);
-
              .zmiti-reload-poetry{
+              a{
+                color:#999;
+                display: block;
+                width: 100%;
+                height: 100%;
+              }
               border:1px solid #bbb;
-
               text-align: center;;
               padding: 10px 0;
               width: 150px;
               color:#999;
-              margin-left: 200px;
+              
               @include br(30px);
               img{
                 width:30px;
@@ -36,6 +40,8 @@ $viewW:640px;
              }
           }
           &:first-of-type{
+              -webkit-box-flex:3;
+
               @include displayBox(horizontal);
               -webkit-box-pack:start;
               -webkit-box-align:start;
@@ -66,12 +72,15 @@ $viewW:640px;
                      vertical-align: top;
                    }
                  }
-                 width:auto;
+
+
+                 
                  text-align: left;
                  margin-top: 0;
                  margin-left: 10px;
                  &>div:nth-of-type(1){
                    font-size: 28px;
+                   max-width: 300px;
                  }
                  &>div:nth-of-type(2){
                     font-size:30px;

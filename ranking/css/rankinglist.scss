@@ -1,0 +1,147 @@
+@import "../../assets/css/base.scss";
+$viewW:640px;
+ .zmiti-rankinglist-main-ui{
+ 	width:$viewW;
+ 	height:100%;
+ 	@include pos(a);
+ 	background: #fff;
+ 	z-index: 0;
+ 	left:0;
+ 	top:0;
+ 	@include transform(translate3d($viewW,0,0));
+ 	@include transition(.4s);
+ 	&.active{
+ 		@include transform(translate3d(0,0,0));
+ 		z-index: 20;
+ 	}
+
+ 	.zmiti-rankinglist-header{
+ 		font-size: 36px;
+ 		text-align: center;;
+ 		@include pos(a);
+ 		top: 20px;
+ 		color:#fa1a1a;
+ 		left: 50%;
+ 		@include transform(translate3d(-50%,0,0));
+ 	}
+ 	.zmiti-rankinglist-back{
+ 		@include pos(a);
+ 		color: #999;
+ 		right: 30px;
+ 		top: 30px;
+ 		a{color:#999;}
+ 		border:1px solid #999;
+ 		@include br(20px);
+ 		padding: 4px 20px;
+ 	}
+
+
+ 	.zmiti-rankinglist-title{
+ 		@include pos(a);
+ 		width:100%;
+ 		top: 100px;
+ 		width:$viewW;
+ 		@include displayBox(horizontal);
+ 		li{
+ 			-webkit-box-flex:1;
+ 			text-align: center;
+ 			font-weight: bold;
+ 			&:last-of-type{
+ 				text-align: right;
+ 				margin-right: 0px;
+ 			}
+ 			&:nth-of-type(2),&:nth-of-type(3){
+ 				text-align: center;
+ 				&.zmiti-read-desc,&.zmiti-score-desc{
+ 					span:nth-of-type(2){
+ 						border-top-color:#000;
+ 					}
+ 					span:nth-of-type(1){
+ 						border-bottom-color:#ccc;
+ 					}
+ 				}
+ 				&.zmiti-read-asc,&.zmiti-score-asc{
+ 					span:nth-of-type(2){
+ 						border-top-color:#ccc;
+ 					}
+ 					span:nth-of-type(1){
+ 						border-bottom-color:#000;
+ 					}
+ 				}
+ 			}
+
+ 			&:nth-of-type(2),&:nth-of-type(3){
+
+ 				@include pos(r);
+				span:nth-of-type(1){
+					@include pos(a);
+					width: 0;
+				    height: 0;
+				    $size:12px;
+				    margin-top: 5px;
+				    margin-left: 10px;
+				    border-left: $size solid transparent;
+				    border-right: $size solid transparent;
+				    border-bottom: $size solid #ccc;
+				}
+				span:nth-of-type(2){
+					@include pos(a);
+					width: 0;
+				    height: 0;
+				    $size:12px;
+				    margin-left: 10px;
+				    margin-top: 20px;
+				    border-left: $size solid transparent;
+				    border-right: $size solid transparent;
+				    border-top: $size solid #ccc;
+				}
+			}
+ 		}
+
+ 	}
+
+ 	.zmiti-rankinglist-scroll{
+ 		@include pos(r);
+ 		bottom:0;
+ 		width:100%;
+ 		margin:150px auto 0;
+ 		overflow: hidden;
+ 		box-sizing:border-box;
+ 		li{
+ 			width:96%;
+ 			margin:0 auto;
+ 			@include displayBox(horizontal);
+ 			$size:90px;
+ 			height:$size;
+ 			line-height: $size;
+ 			border-bottom:1px solid #ccc;
+ 			aside{
+ 				-webkit-box-flex:1;
+ 				height: $size;
+ 				&:first-of-type{
+ 					img{
+ 						width: 60px;
+ 						@include br(50%);
+ 						margin-right: 10px;
+ 					}
+
+ 					padding-right: 40px;
+ 					overflow: hidden;
+ 					margin-left: 20px;
+ 					max-width: 200px;
+ 				}
+ 				&:nth-of-type(2){
+ 					text-align: center;
+ 				
+ 					-webkit-box-flex:0;
+ 					width: 100px;
+ 				}
+ 				&:last-of-type{
+ 					margin-right: 60px;
+ 					text-align: right;
+ 				}
+ 			}
+ 		}
+
+ 	}
+ }

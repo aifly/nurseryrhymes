@@ -1,0 +1,132 @@
+/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {
+    background-color: #fff;
+    border-color: #bf1616;
+    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);
+}*/
+.lt-full {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden; }
+
+.zmiti-rankinglist-main-ui {
+  width: 640px;
+  height: 100%;
+  position: absolute;
+  background: #fff;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  -webkit-transform: translate3d(640px, 0, 0);
+  transform: translate3d(640px, 0, 0);
+  -webkit-transition: 0.4s;
+  transition: 0.4s; }
+  .zmiti-rankinglist-main-ui.active {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    z-index: 20; }
+  .zmiti-rankinglist-main-ui .zmiti-rankinglist-header {
+    font-size: 36px;
+    text-align: center;
+    position: absolute;
+    top: 20px;
+    color: #fa1a1a;
+    left: 50%;
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0); }
+  .zmiti-rankinglist-main-ui .zmiti-rankinglist-back {
+    position: absolute;
+    color: #999;
+    right: 30px;
+    top: 30px;
+    border: 1px solid #999;
+    border-radius: 20px;
+    padding: 4px 20px; }
+    .zmiti-rankinglist-main-ui .zmiti-rankinglist-back a {
+      color: #999; }
+  .zmiti-rankinglist-main-ui .zmiti-rankinglist-title {
+    position: absolute;
+    width: 100%;
+    top: 100px;
+    width: 640px;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-orient: horizontal; }
+    .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li {
+      -webkit-box-flex: 1;
+      text-align: center;
+      font-weight: bold; }
+      .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:last-of-type {
+        text-align: right;
+        margin-right: 0px; }
+      .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3) {
+        text-align: center; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-read-desc span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-score-desc span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-read-desc span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-score-desc span:nth-of-type(2) {
+          border-top-color: #000; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-read-desc span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-score-desc span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-read-desc span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-score-desc span:nth-of-type(1) {
+          border-bottom-color: #ccc; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-read-asc span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-score-asc span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-read-asc span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-score-asc span:nth-of-type(2) {
+          border-top-color: #ccc; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-read-asc span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2).zmiti-score-asc span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-read-asc span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3).zmiti-score-asc span:nth-of-type(1) {
+          border-bottom-color: #000; }
+      .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3) {
+        position: relative; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2) span:nth-of-type(1), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3) span:nth-of-type(1) {
+          position: absolute;
+          width: 0;
+          height: 0;
+          margin-top: 5px;
+          margin-left: 10px;
+          border-left: 12px solid transparent;
+          border-right: 12px solid transparent;
+          border-bottom: 12px solid #ccc; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(2) span:nth-of-type(2), .zmiti-rankinglist-main-ui .zmiti-rankinglist-title li:nth-of-type(3) span:nth-of-type(2) {
+          position: absolute;
+          width: 0;
+          height: 0;
+          margin-left: 10px;
+          margin-top: 20px;
+          border-left: 12px solid transparent;
+          border-right: 12px solid transparent;
+          border-top: 12px solid #ccc; }
+  .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin: 150px auto 0;
+    overflow: hidden;
+    box-sizing: border-box; }
+    .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll li {
+      width: 96%;
+      margin: 0 auto;
+      display: -webkit-box;
+      -webkit-box-align: center;
+      -webkit-box-pack: center;
+      -webkit-box-orient: horizontal;
+      height: 90px;
+      line-height: 90px;
+      border-bottom: 1px solid #ccc; }
+      .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll li aside {
+        -webkit-box-flex: 1;
+        height: 90px; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll li aside:first-of-type {
+          padding-right: 40px;
+          overflow: hidden;
+          margin-left: 20px;
+          max-width: 200px; }
+          .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll li aside:first-of-type img {
+            width: 60px;
+            border-radius: 50%;
+            margin-right: 10px; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll li aside:nth-of-type(2) {
+          text-align: center;
+          -webkit-box-flex: 0;
+          width: 100px; }
+        .zmiti-rankinglist-main-ui .zmiti-rankinglist-scroll li aside:last-of-type {
+          margin-right: 60px;
+          text-align: right; }
+
+/*# sourceMappingURL=rankinglist.css.map */

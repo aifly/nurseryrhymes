@@ -13,10 +13,53 @@ $viewW:640px;
    &.active{
       @include transform( scale(1) translate3d(0,0,0));
    }
+   .zmiti-shareopen-main-C{
+      @include transition(.4s);
+      &.top{
+        @include transform( scale(.9) translate3d(0,-30vh,0));  
+      }   
+   }
+   
 
    &.hideright{
       @include transform( translate3d($viewW,0,0)  scale(.8));
    }
+
+   .zmiti-share-dialog-C{
+
+      z-index: 1000;
+      background: rgba(0,0,0,.5);
+      @include displayBox(horizontal);
+
+      .zmiti-share-dialog{
+         width: 550px;
+         @include br(10px);
+         height: 450px;
+         background: #fff;
+         @include displayBox(vertical);
+      }
+
+      .zmiti-share-text{
+         @include displayBox(vertical);
+         &>div{
+            -webkit-box-flex:1;
+            margin: 40px 0;
+         }
+         &>div:nth-of-type(1){
+            width: 80%;
+            margin:0 auto;
+            font-size: 32px;
+            line-height: 60px;
+            span{
+               color:#fa1a1a;
+               font-size: 60px;
+            }
+         }
+      }
+
+   }
+
+
    .zmiti-shareopen-main{
       width: $viewW - 100;
       height: $viewW - 200;
@@ -31,10 +74,17 @@ $viewW:640px;
          width: 200px;
          margin-top:-30px;
       }
+      label{
+         max-width: 100px;
+         vertical-align: middle;
+         font-size: 32px;
+         overflow: hidden;
+      }
       &>section{
          img{width:70px;margin-left:   20px;}
          color:#00a0e9;
          @include pos(r);
+
          .zmiti-share-audio{
             width:400px;
             @include pos(a);
@@ -76,18 +126,18 @@ $viewW:640px;
       }  
    }
    .zmiti-share-btns{
-      margin: 100px auto;
+      margin: 0 auto;
       height: 60px;
-
-      width: $viewW - 100;
+      width: 500px;
       @include displayBox(horizontal);
       aside{
          background:#00a0e9;
          color:#fff;
+         margin: 0 10px;
          height: 60px;
-         margin:0 20px;
          @include br(30px);
          line-height:   60px;
+         padding: 0 20px;
          text-align: center;
          -webkit-box-flex: 1;
          section{
@@ -96,7 +146,7 @@ $viewW:640px;
    }
    .zmiti-share-input-C{
       width: 220px;
-      margin-left:  300px;
+      margin:200px auto;
       .zmiti-share-input{
          height: 50px;
          line-height:  50px;
@@ -112,9 +162,9 @@ $viewW:640px;
          color:#fff;
          width: 100px;
          @include br(10px);
-         margin-top: 20px;
-         padding:10px 0;
-         margin-left:   120px;
+         margin: 20px auto;
+         padding:10px ;
+         
       }
    }
 }

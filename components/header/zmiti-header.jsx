@@ -19,15 +19,15 @@ class ZmitiHeaderApp extends Component {
 						<section className='zmiti-headimg' onTouchTap={this.showUserCenter.bind(this)}>
 							<img src={this.props.headimgurl||'./assets/images/zmiti.jpg'}/>
 						</section>
-						<section className='zmiti-user-info'>
-							<div>{this.props.nickname||'zmiti'}</div>
+						<section className='zmiti-user-info '>
+							<div className='zmiti-text-overflow'>{this.props.nickname||'zmiti'}</div>
 							<div><span>积分:{this.props.score||10}</span></div>
 							
 						</section>
 					</section>
 					<section>
-						{this.props.showRefreshBtn && <div onTouchTap={this.refreshPoetry.bind(this)} className='zmiti-reload-poetry'>
-													排行榜
+						{this.props.showRefreshBtn && <div  className='zmiti-reload-poetry'>
+													<a href='./ranking.html'>排行榜</a>
 												</div>}
 					</section>
 				</header>
@@ -71,14 +71,14 @@ class ZmitiHeaderApp extends Component {
 	}
 
 	refreshPoetry(){
-		let {obserable} = this.props;
+		/*let {obserable} = this.props;
 		obserable.trigger({
 			type:'refreshPoetry',
 			data:{
 				type:'poetry',
 				isOther:false
 			}
-		})
+		})*/
 	}
 
 	componentDidMount() {

@@ -288,11 +288,11 @@ class ZmitiContentApp extends Component {
 										worksid:s.props.worksid,
 										workdataid:s.props.workdataid,
 										wxopenid:s.props.openid,
-										parentwxopenid:s.props.parentWxopenId,
+										parentwxopenid:'',
 										mediaid:serverId,
 										score:age,
 										duration:s.props.duration,
-										changetext:s.props.transformResult.replace(/<[^>]+>/g,""),
+										changetext:s.props.transformResult.replace(/<[^>]+>/g,"")|| 'zmiti-tongyao',
 										usercity:s.props.usercity,
 										longitude:s.props.longitude,
 										latitude:s.props.latitude,
@@ -326,7 +326,7 @@ class ZmitiContentApp extends Component {
 												id
 											},()=>{
 												setTimeout(()=>{
-									   				s.wxConfig(s.props.nickname+'邀请您来读童谣','读童谣',s.props.shareImg,s.props.wxappid);
+									   				s.wxConfig(s.props.nickname+'儿童节重返'+age+'岁',window.shareInfo.desc,s.props.shareImg,s.props.wxappid);
 									   			},500)
 											});
 

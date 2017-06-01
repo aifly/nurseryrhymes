@@ -8,7 +8,8 @@
   height: 100%;
   position: absolute;
   left: 0;
-  top: 0; }
+  top: 0;
+  overflow: hidden; }
 
 .zmiti-loading-ui {
   position: fixed;
@@ -31,31 +32,22 @@
     border-radius: 50%;
     margin: -90px 0 0 -90px; }
     .zmiti-loading-ui a .zmiti-head {
-      width: 60px;
-      height: 60px;
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-left: -30px;
-      margin-top: -30px; }
+      margin-left: -50px;
+      margin-top: -50px; }
     .zmiti-loading-ui a .zmiti-progress {
       width: 100%;
       position: relative;
       z-index: 10;
-      top: 90px; }
+      top: 120px;
+      font-size: 40px;
+      font-family: Georgia; }
   .zmiti-loading-ui a .line1 {
-    width: 80px;
-    height: 80px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: -42px 0 0 -42px;
-    border: 2px solid #fff;
-    border-radius: 80px 80px 80px 80px;
-    border-right-color: transparent;
-    border-top-color: transparent; }
-  .zmiti-loading-ui a .line2 {
     width: 100px;
     height: 100px;
     position: absolute;
@@ -63,16 +55,27 @@
     top: 50%;
     margin: -52px 0 0 -52px;
     border: 2px solid #fff;
-    border-radius: 100px 100px 100px 100px;
+    border-radius: 80px 80px 80px 80px;
     border-right-color: transparent;
-    border-left-color: transparent; }
-  .zmiti-loading-ui a .line3 {
+    border-top-color: transparent; }
+  .zmiti-loading-ui a .line2 {
     width: 120px;
     height: 120px;
     position: absolute;
     left: 50%;
     top: 50%;
     margin: -62px 0 0 -62px;
+    border: 2px solid #fff;
+    border-radius: 100px 100px 100px 100px;
+    border-right-color: transparent;
+    border-left-color: transparent; }
+  .zmiti-loading-ui a .line3 {
+    width: 140px;
+    height: 140px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -72px 0 0 -72px;
     border: 2px solid #fff;
     border-radius: 120px 120px 120px 120px;
     border-right-color: transparent; }
